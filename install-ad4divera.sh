@@ -250,4 +250,4 @@ echo " "
 echo "Hat alles geklappt sollte, je nach Einstellung des Dauerbetriebes,"
 echo "nun der Monitor im Vollbild angezeigt werden oder bei einem Einsatz an gehen."
 echo "------------------------------------------------------------------------------"
-sudo rm ~/install.sh
+sudo rm ~/install-ad4divera.sh
