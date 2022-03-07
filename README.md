@@ -6,7 +6,7 @@ Mit diesem Script ist es möglich ein Alarmdisplay für Fahrzeughallen bei Feuer
 
 Getestet und betrieben wird dieser Code mit einem Raspberry Pi 3B+. 
 
-# Installation
+## Installation
 Es wird ein frisch aufgesetzter Raspberry Pi mit Internetverbindung vorausgesetzt!
 Am besten greifen Sie per SSH auf den RPi zu.
 
