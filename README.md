@@ -9,3 +9,8 @@ Getestet und betrieben wird dieser Code mit einem Raspberry Pi 3B+.
 Es wird ein frisch aufgesetzter Raspberry Pi mit Internetverbindung vorausgesetzt!
 Am besten greifen Sie per SSH auf den RPi zu.
 
+Wenn Sie im Home-Verzeichnis Ihres RPi´s sind geben Sie den Befehl
+
+wget https://github.com/juergen-u/Ad4Divera/blob/main/install.sh 
+
+ein um das Installations-Script zu laden.
