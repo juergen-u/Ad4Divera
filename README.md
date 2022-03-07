@@ -18,7 +18,7 @@ Am besten greifen Sie per SSH auf den RPi zu.
 **Noch ein Tipp zu den Monitoren:** Ich habe die besten Ergebnisse bekommen wenn die Anzeige-Höhe bei der Zusammensetzung der Inhalte nicht auf *automatisch* sondern auf *prozent* eingestellt war und hier dann auf **99%**.
 Dadurch wird der gesammte Inhalt ohne Scrollbalken dargestellt!
 
-### install.sh
+### install-ad4divera.sh
 Das install.sh-Script führt folgende Anweisungen/Aktionen durchgeführt:
 - **Installation der benötigten Programme:** jq, unclutter, cec-utils, xdotool, wkhtmltopdf und firefox-esr
 - **Anlegen der Ordner:** Ad4Divera und in diesem Archiv
@@ -31,7 +31,7 @@ Das install.sh-Script führt folgende Anweisungen/Aktionen durchgeführt:
 
 ## per SSH-Verbindung zum RPi
 Wenn Sie im Home-Verzeichnis Ihres RPi´s sind geben Sie den Befehl
-`wget https://github.com/juergen-u/Ad4Divera/blob/main/install.sh`
+`wget https://github.com/juergen-u/Ad4Divera/blob/main/install-ad4divera.sh`
 ein um das Installations-Script zu laden.
 
 Mit dem Befehl `sudo chmod +x install.sh` wird die Datei ausführbar gemacht. Nun mit `./install.sh`ausführen und den Anweisungen folgen.
