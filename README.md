@@ -48,5 +48,5 @@ Um die Änderungen zu speichern drücken Sie `STRG + O`, mit ENTER bestätigen. 
 
 ## Kartenausdruck
 Wenn Sie nachträglich noch einen Kartenausdruck möchten müssen Sie die Datei /Ad4Divera/maps.html anpassen.
-Wechseln Sie wieder in da Verzeichnis und öffnen Sie mit `sudo nano maps.html` den Editor.
-Hier müssen Sie den Autologin des Monitorbenutzers an das Ende von `https://app.divera247.com/monitor/1.html?autologin=` eintragen und die Datei wie gewohnt speichern.
+Wechseln Sie wieder in das Verzeichnis und öffnen Sie mit `sudo nano maps.html` den Editor.
+Hier müssen Sie den Autologin-Key des Monitorbenutzers an das Ende von `https://app.divera247.com/monitor/1.html?autologin=` eintragen und die Datei wie gewohnt speichern.
