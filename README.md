@@ -21,7 +21,7 @@ Dadurch wird der gesammte Inhalt ohne Scrollbalken dargestellt!
 ### install-ad4divera.sh
 Das install.sh-Script führt folgende Anweisungen/Aktionen durchgeführt:
 - **Installation der benötigten Programme:** jq, unclutter, cec-utils, xdotool, wkhtmltopdf und firefox-esr
-- **Anlegen der Ordner:** Ad4Divera und in diesem Archiv
+- **Anlegen der Ordner:** /Ad4Divera und in diesem /Archiv
 - **Erstellen der Programm-Dateien:** ad4divera.conf, ad4divera.sh und maps.html
 - **Editieren der Autostartdatei** /etc/xdg/lxsession/LXDE-pi/autostart
 - **Abfrage der API-KEYs:** für die Einheit und den Autologin des/der Monitorbenutzer aus Divera247.com
@@ -29,12 +29,20 @@ Das install.sh-Script führt folgende Anweisungen/Aktionen durchgeführt:
 
 # Installation
 
-## per SSH-Verbindung zum RPi
-Wenn Sie im Home-Verzeichnis Ihres RPi´s sind geben Sie den Befehl
+## per SSH-Verbindung oder direkt auf dem RPi im Terminal
+Wenn Sie im Home-Verzeichnis Ihres RPi´s sind geben Sie den Befehl `git clone https://github.com/juergen-u/Ad4Divera.git` ein um das Installations-Script zu laden.
 
-`git clone https://github.com/juergen-u/Ad4Divera.git`
-
-ein um das Installations-Script zu laden.
-
-Nun mit `cd Ad4Divera`in den Ordner wechseln.
+Nun mit `cd Ad4Divera` in den Ordner wechseln.
 Mit dem Befehl `sudo chmod +x install-ad4divera.sh` wird die Datei ausführbar gemacht. Nun mit `./install-ad4divera.sh`ausführen und den Anweisungen folgen.
+
+# Änderungen der Konfiguration
+
+## ad4divera.conf
+Wechseln Sie wieder in das Verzeichnis /Ad4Divera mit `cd Ad4Divera`.
+Mit `sudo nano ad4divera.conf` können Sie diese bearbeiten und Änderungen vornehmen.
+Zum die Änderungen zu speichern drücken Sie `STRG + O`, mit ENTER bestätigen. mit `STRG + X` verlassen sie den Editor.
+
+## Kartenausdruck
+Wenn Sie nachträglich noch einen Kartenausdruck möchten müssen Sie die Datei /Ad4Divera/maps.html anpassen.
+Wechseln Sie wieder in da Verzeichnis und öffnen Sie mit `sudo nano maps.html` den Editor.
+Hier müssen Sie den Autologin des Monitorbenutzers an das Ende von `https://app.divera247.com/monitor/1.html?autologin=` eintragen und die Datei wie gewohnt speichern.
