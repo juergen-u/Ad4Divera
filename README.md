@@ -77,3 +77,13 @@ Wichtig ist hier die Anpassung der Befehle `; on_event_start value` und `; on_ev
 
 ## per Bewegungsmelder
 Wurde noch nicht durchgeführt.
+
+# Automatischer Neustart des RPi
+Ich würde den RPi ein oder zweimal am Tag neu starten lassen um zu verhindern das er sich aufhängt.
+
+Dafür mit `sudo crontab -e` einen Job erstellen.
+Nach der auswahl des Editors am Ende die Zeile
+
+`0 0 * * * sudo reboot`
+
+einfügen und speichern. Dadurch wird um 0 Uhr ein Neustart automatisch durchgeführt.
