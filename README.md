@@ -27,6 +27,8 @@ Das install.sh-Script führt folgende Anweisungen/Aktionen durchgeführt:
 - **Abfrage der API-KEYs:** für die Einheit und den Autologin des/der Monitorbenutzer aus Divera247.com
 - **Grundkonfiguration:** z.B. ob Monitor oder TV benutzt wird, ob dieser immer an sein soll oder nur bei einem Einsatz, usw.
 
+### Dauerbetrieb
+
 # Installation
 
 ## per SSH-Verbindung oder direkt auf dem RPi im Terminal
@@ -40,7 +42,7 @@ Mit dem Befehl `sudo chmod +x install-ad4divera.sh` wird die Datei ausführbar g
 ## ad4divera.conf
 Wechseln Sie wieder in das Verzeichnis /Ad4Divera mit `cd Ad4Divera`.
 Mit `sudo nano ad4divera.conf` können Sie diese bearbeiten und Änderungen vornehmen.
-Zum die Änderungen zu speichern drücken Sie `STRG + O`, mit ENTER bestätigen. mit `STRG + X` verlassen sie den Editor.
+Um die Änderungen zu speichern drücken Sie `STRG + O`, mit ENTER bestätigen. Mit `STRG + X` verlassen sie den Editor.
 
 ## Kartenausdruck
 Wenn Sie nachträglich noch einen Kartenausdruck möchten müssen Sie die Datei /Ad4Divera/maps.html anpassen.
