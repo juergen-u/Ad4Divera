@@ -77,6 +77,7 @@ Wichtig ist hier die Anpassung der Befehle `; on_event_start value` und `; on_ev
 
 ## per Bewegungsmelder
 Wurde noch nicht durchgeführt.
+# 
 
 # Automatischer Neustart des RPi
 Ich würde den RPi ein oder zweimal am Tag neu starten lassen um zu verhindern das er sich aufhängt.
