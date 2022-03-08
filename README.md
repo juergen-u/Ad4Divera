@@ -19,7 +19,7 @@ Am besten greifen Sie per SSH auf den RPi zu.
 Dadurch wird der gesammte Inhalt ohne Scrollbalken dargestellt!
 
 ### install-ad4divera.sh
-Das install.sh-Script führt folgende Anweisungen/Aktionen durchgeführt:
+Das install-ad4divera.sh-Script führt folgende Anweisungen/Aktionen durchgeführt:
 - **Installation der benötigten Programme:** jq, unclutter, cec-utils, xdotool, wkhtmltopdf und firefox-esr
 - **Anlegen der Ordner:** /Ad4Divera und in diesem /Archiv
 - **Erstellen der Programm-Dateien:** ad4divera.conf, ad4divera.sh und maps.html
@@ -28,6 +28,8 @@ Das install.sh-Script führt folgende Anweisungen/Aktionen durchgeführt:
 - **Grundkonfiguration:** z.B. ob Monitor oder TV benutzt wird, ob dieser immer an sein soll oder nur bei einem Einsatz, usw.
 
 ### Dauerbetrieb
+Mit der Auswahl des Dauerbetriebes kann man die Lebensdauer des Monitors/TVs entschieden verbessern. Wenn diese nicht permanden an sind sondern nur wenn sie benötigt werden spart es zudem noch Energie. Deshalb ist die Option so aufgebaut das der Monitor/TV nur bei einem Einsatz aus dem Standby erwacht. 
+In den Divera247-Einstellungen kann die Zeit wie lange ein Einsatz aktiv ist (Zeit bis automatisch abgeschlossen) z.B. auf eine Stunde eingestellt werden. Somit ist die Anzeige für diese Zeit aktiv, nach Ablauf der Zeit geht der Monitor/TV wieder in Standby.
 
 # Installation
 
