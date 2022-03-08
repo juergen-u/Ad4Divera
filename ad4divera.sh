@@ -37,13 +37,13 @@ while true; do
         HAS_ID=`curl -s ${API_URL} | jq -r -j '.data .id'`
         DOWNLOAD_URL="https://www.divera247.com/api/v2/alarms/download/"${HAS_ID}"?accesskey=${ACCESSKEY}"
         wget $DOWNLOAD_URL -O $HOME/akt_einsatz.pdf
-        lp -d ALARMDRUCKER -o media=A4 -n $ANZAHL -o fit-to-page $HOME/akt_einsatz.pdf
+        lp -d ALARMDRUCKER -o media=A4 -n $ANZAHLPDF -o fit-to-page $HOME/akt_einsatz.pdf
       fi
 
       ## KARTE AUSDRUCKEN
       if [ $KARTE = 1 ]; then
         wkhtmltoimage --width 1920 --height 1280 --javascript-delay 30000 $HOME/Ad4Divera/maps.html $HOME/akt_route.jpg
-        lp -d ALARMDRUCKER -o media=A4 -n $ANZAHL -o fit-to-page $HOME/akt_route.jpg
+        lp -d ALARMDRUCKER -o media=A4 -n $ANZAHLKARTE -o fit-to-page $HOME/akt_route.jpg
       fi
 
       ## ARCHIVIEREN UND AUSDRUCKE WIEDER LOESCHEN
