@@ -39,7 +39,9 @@ Das install-ad4divera.sh-Script führt folgende Anweisungen/Aktionen durchgefüh
 # Installation
 
 ## per SSH-Verbindung oder direkt auf dem RPi im Terminal
-Wenn Sie im Home-Verzeichnis Ihres RPi´s sind geben Sie den Befehl `git clone https://github.com/juergen-u/Ad4Divera.git` ein um das Installations-Script zu laden.
+Wenn Sie im Home-Verzeichnis Ihres RPi´s sind geben Sie den Befehl 
+
+`git clone https://github.com/juergen-u/Ad4Divera.git` ein um das Installations-Script zu laden.
 
 Nun mit `cd Ad4Divera` in den Ordner wechseln.
 Mit dem Befehl `sudo chmod +x install-ad4divera.sh` wird die Datei ausführbar gemacht. Nun mit `./install-ad4divera.sh`ausführen und den Anweisungen folgen.
