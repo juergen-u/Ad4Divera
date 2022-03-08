@@ -33,7 +33,7 @@ In den Divera247-Einstellungen kann die Zeit wie lange ein Einsatz aktiv ist (Ze
 
 ### Ausdrucke
 Um die Einsatzdepesche und/oder die Karte auszudrucken muss ein Drucker auf dem RPi eingerichtet sein mit dem Namen `ALARMDRUCKER` (alles in Großbuchstaben)!
-Dabei ist es egal ob der Drucker per USB oder LAN angeschlossen ist. Bei der Installation wird abgefragt wieviele Ausdrucke erzeugt werden sollen.
+Dabei ist es egal ob der Drucker per USB oder LAN angeschlossen ist. Bei der Installation wird abgefragt wieviele Ausdrucke der Einsatzdepesche und/oder Karte erzeugt werden sollen.
 
 # Installation
 
