@@ -123,6 +123,10 @@ OUTPUT="$OUTPUT"
 # bitte wählen:
 DOWNLOAD="$DOWNLOAD"
 #
+#Wie oft soll die Einsatzdepesche gedruckt werden?
+#
+ANZAHLPDF="$ANZAHLPDF"
+#
 # Soll eine Kartenansicht aus einem zweiten Divera-Monitor geladen und
 # ausgedruckt werden?
 #   1. Ja
@@ -130,6 +134,10 @@ DOWNLOAD="$DOWNLOAD"
 #
 # bitte wählen:
 KARTE="$KARTE"
+#
+#Wie oft soll die Karte gedruckt werden?
+#
+ANZAHLKARTE="$ANZAHLKARTE"
 #
 # Soll in der Zeit in der kein Einsatz anliegt der Monitor/TV per Webcam gesteuert werden?
 #   1. Ja
@@ -191,13 +199,13 @@ while true; do
         HAS_ID=`curl -s ${API_URL} | jq -r -j '.data .id'`
         DOWNLOAD_URL="https://www.divera247.com/api/v2/alarms/download/"${HAS_ID}"?accesskey=${ACCESSKEY}"
         wget $DOWNLOAD_URL -O $HOME/akt_einsatz.pdf
-        lp -d ALARMDRUCKER -o media=A4 -n 1 -o fit-to-page $HOME/akt_einsatz.pdf
+        lp -d ALARMDRUCKER -o media=A4 -n $ANZAHLPDF -o fit-to-page $HOME/akt_einsatz.pdf
       fi
 
       ## KARTE AUSDRUCKEN
       if [ $KARTE = 1 ]; then
         wkhtmltoimage --width 1920 --height 1280 --javascript-delay 30000 $HOME/Ad4Divera/maps.html $HOME/akt_route.jpg
-        lp -d ALARMDRUCKER -o media=A4 -n 1 -o fit-to-page $HOME/akt_route.jpg
+        lp -d ALARMDRUCKER -o media=A4 -n $ANZAHLKARTE -o fit-to-page $HOME/akt_route.jpg
       fi
 
       ## ARCHIVIEREN UND AUSDRUCKE WIEDER LOESCHEN
