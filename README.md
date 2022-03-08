@@ -34,6 +34,7 @@ Das install-ad4divera.sh-Script führt folgende Anweisungen/Aktionen durchgefüh
 - **Editieren der Autostartdatei** /etc/xdg/lxsession/LXDE-pi/autostart
 - **Abfrage der API-KEYs:** für die Einheit und den Autologin des/der Monitorbenutzer aus Divera247.com
 - **Grundkonfiguration:** z.B. ob Monitor oder TV benutzt wird, ob dieser immer an sein soll oder nur bei einem Einsatz, usw.
+#
 
 # Installation
 
@@ -55,9 +56,11 @@ Wenn Sie nachträglich noch einen Kartenausdruck möchten müssen Sie die Datei 
 Wechseln Sie wieder in das Verzeichnis und öffnen Sie mit `sudo nano maps.html` den Editor.
 Hier müssen Sie den Autologin-Key des Monitorbenutzers an das Ende von `https://app.divera247.com/monitor/1.html?autologin=` eintragen und die Datei wie gewohnt speichern.
 Anschließend wieder die `ad4divera.conf` anpassen.
+#
 
 # Erweiterung mit Bewegungserkennung
 
+## per Webcam
 Wir schalten unseren Monitor für 60 Sekunden in der Fahrzeughalle ein wenn jemand vorbeigeht. In der Standby-Ansicht sind bei uns die Wetterdaten des DWD, Termine und Mitteilungen zu lesen. Dafür verwenden wir eine Webcam, diese ist so konfiguriert das sie weder Bilder noch Videos speichert. Das Programm *Motion* ist so eingerichtet das es bei einer Änderung von xx-Pixel dies als Bewegung ergennt und ein Event startet. Nach 60 Sekunden wird das Event beendet und der Monitor geht wieder in Standby. Bei einem Einsatz wird Motion deaktiviert so das der Monitor dann wieder an bleibt.
 
 Installiert wird Motion mit dem Befehl `sudo apt install motion`. Anschließend muss mit `sudo nano /etc/motion/motion.conf` diese angepasst werden.
@@ -65,4 +68,10 @@ Anleitungen gibt es im Internet dazu reichlich.
 Wichtig ist hier die Anpassung der Befehle `; on_event_start value` und `; on_event-end value`!
 ## wie folgt anpassen:
 **Monitor** `on_event_start vcgencmd display_power 1` und `on_event_end display_power 0`
+
 **TV** `on_event_start echo 'on 0' | cec-client -s -d 1` und `on_event_end echo 'standby 0' | cec-client -s -d 1`
+
+**WICHTIG** das `;` am Anfang der Zeile entfernen!
+
+## per Bewegungsmelder
+Wurde noch nicht durchgeführt.
