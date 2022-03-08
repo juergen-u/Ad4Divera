@@ -57,6 +57,12 @@ read DOWNLOAD
 echo "------------------------------------------------------------------------------"
 sleep 1
 echo " "
+echo "Wie oft soll die Einsatzdepesche gedruckt werden?"
+echo " "
+read ANZAHLPDF
+echo "------------------------------------------------------------------------------"
+sleep 1
+echo " "
 echo "Soll eine Kartenansicht aus einem zweiten Divera-Monitor geladen und"
 echo "ausgedruckt werden?"
 echo "  1. Ja"
@@ -64,6 +70,12 @@ echo "  2. Nein"
 echo " "
 echo "bitte wählen: "
 read KARTE
+echo "------------------------------------------------------------------------------"
+sleep 1
+echo " "
+echo "Wie oft soll die Karte gedruckt werden?"
+echo " "
+read ANZAHLKARTE
 echo "------------------------------------------------------------------------------"
 sleep 1
 echo " "
