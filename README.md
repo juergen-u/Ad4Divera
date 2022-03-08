@@ -31,6 +31,10 @@ Das install-ad4divera.sh-Script führt folgende Anweisungen/Aktionen durchgefüh
 Mit der Auswahl des Dauerbetriebes kann man die Lebensdauer des Monitors/TVs entschieden verbessern. Wenn diese nicht permanden an sind sondern nur wenn sie benötigt werden spart es zudem noch Energie. Deshalb ist die Option so aufgebaut das der Monitor/TV nur bei einem Einsatz aus dem Standby erwacht. 
 In den Divera247-Einstellungen kann die Zeit wie lange ein Einsatz aktiv ist (Zeit bis automatisch abgeschlossen) z.B. auf eine Stunde eingestellt werden. Somit ist die Anzeige für diese Zeit aktiv, nach Ablauf der Zeit geht der Monitor/TV wieder in Standby.
 
+### Ausdrucke
+Um die Einsatzdepesche und/oder die Karte auszudrucken muss ein Drucker auf dem RPi eingerichtet sein mit dem Namen `ALARMDRUCKER` (alles in Großbuchstaben)!
+Dabei ist es egal ob der Drucker per USB oder LAN angeschlossen ist. Bei der Installation wird abgefragt wieviele Ausdrucke erzeugt werden sollen.
+
 # Installation
 
 ## per SSH-Verbindung oder direkt auf dem RPi im Terminal
