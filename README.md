@@ -31,7 +31,9 @@ Das install.sh-Script führt folgende Anweisungen/Aktionen durchgeführt:
 
 ## per SSH-Verbindung zum RPi
 Wenn Sie im Home-Verzeichnis Ihres RPi´s sind geben Sie den Befehl
-´git clone https://github.com/juergen-u/Ad4Divera.git
+
+`git clone https://github.com/juergen-u/Ad4Divera.git`
+
 ein um das Installations-Script zu laden.
 
 Nun mit `cd Ad4Divera`in den Ordner wechseln.
