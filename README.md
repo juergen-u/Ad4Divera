@@ -40,22 +40,48 @@ Das install-ad4divera.sh-Script führt folgende Anweisungen/Aktionen durchgefüh
 
 ## per SSH-Verbindung oder direkt auf dem RPi im Terminal
 Wenn Sie im Home-Verzeichnis Ihres RPi´s sind geben Sie den Befehl 
+```bash
+git clone https://github.com/juergen-u/Ad4Divera.git
+``` 
+ein um das Installations-Script zu laden.
 
-`git clone https://github.com/juergen-u/Ad4Divera.git` ein um das Installations-Script zu laden.
-
-Nun mit `cd Ad4Divera` in den Ordner wechseln.
-Mit dem Befehl `sudo chmod +x install-ad4divera.sh` wird die Datei ausführbar gemacht. Nun mit `./install-ad4divera.sh`ausführen und den Anweisungen folgen.
+Nun mit 
+```bash 
+cd Ad4Divera
+``` 
+in den Ordner wechseln.
+Mit dem Befehl 
+```bash
+sudo chmod +x install-ad4divera.sh
+``` 
+wird die Datei ausführbar gemacht. Nun mit 
+```bash
+./install-ad4divera.sh
+```
+ausführen und den Anweisungen folgen.
 
 # Änderungen der Konfiguration
 
 ## ad4divera.conf
-Wechseln Sie wieder in das Verzeichnis /Ad4Divera mit `cd Ad4Divera`.
-Mit `sudo nano ad4divera.conf` können Sie diese bearbeiten und Änderungen vornehmen.
+Wechseln Sie wieder in das Verzeichnis /Ad4Divera mit 
+```bash
+cd Ad4Divera
+```
+
+Mit 
+```bash
+sudo nano ad4divera.conf
+``` 
+können Sie diese bearbeiten und Änderungen vornehmen.
 Um die Änderungen zu speichern drücken Sie `STRG + O`, mit ENTER bestätigen. Mit `STRG + X` verlassen sie den Editor.
 
 ## Kartenausdruck
 Wenn Sie nachträglich noch einen Kartenausdruck möchten müssen Sie die Datei /Ad4Divera/maps.html anpassen.
-Wechseln Sie wieder in das Verzeichnis und öffnen Sie mit `sudo nano maps.html` den Editor.
+Wechseln Sie wieder in das Verzeichnis und öffnen Sie mit 
+```bash
+sudo nano maps.html
+```
+den Editor.
 Hier müssen Sie den Autologin-Key des Monitorbenutzers an das Ende von `https://app.divera247.com/monitor/1.html?autologin=` eintragen und die Datei wie gewohnt speichern.
 Anschließend wieder die `ad4divera.conf` anpassen.
 #
@@ -65,7 +91,15 @@ Anschließend wieder die `ad4divera.conf` anpassen.
 ## per Webcam
 Wir schalten unseren Monitor für 60 Sekunden in der Fahrzeughalle ein wenn jemand vorbeigeht. In der Standby-Ansicht sind bei uns die Wetterdaten des DWD, Termine und Mitteilungen zu lesen. Dafür verwenden wir eine Webcam, diese ist so konfiguriert das sie weder Bilder noch Videos speichert. Das Programm *Motion* ist so eingerichtet das es bei einer Änderung von xx-Pixel dies als Bewegung ergennt und ein Event startet. Nach 60 Sekunden wird das Event beendet und der Monitor geht wieder in Standby. Bei einem Einsatz wird Motion deaktiviert so das der Monitor dann wieder an bleibt.
 
-Installiert wird Motion mit dem Befehl `sudo apt install motion`. Anschließend muss mit `sudo nano /etc/motion/motion.conf` diese angepasst werden.
+Installiert wird Motion mit dem Befehl 
+```bash
+sudo apt install motion
+```
+Anschließend muss mit 
+```bash
+sudo nano /etc/motion/motion.conf
+```
+diese angepasst werden.
 Anleitungen gibt es im Internet dazu reichlich.
 Wichtig ist hier die Anpassung der Befehle `; on_event_start value` und `; on_event-end value`!
 ## wie folgt anpassen:
@@ -82,7 +116,11 @@ Wurde noch nicht durchgeführt.
 # Automatischer Neustart des RPi
 Ich würde den RPi ein oder zweimal am Tag neu starten lassen um zu verhindern das er sich aufhängt.
 
-Dafür mit `sudo crontab -e` einen Job erstellen.
+Dafür mit 
+```bash
+sudo crontab -e
+```
+einen Job erstellen.
 Nach der auswahl des Editors am Ende die Zeile
 
 `0 0 * * * sudo reboot`
