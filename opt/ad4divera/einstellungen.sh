@@ -45,6 +45,7 @@ case $AUSWAHL in
   	echo "------------------------------------------------------------------------------"
   	echo -e "Der Access-Key wurde auf ${LIGHT_CYAN}$ACCESSKEY${NORMAL_COLOR} geändert."
   	sleep 1
+	let "i--"
   ;;
 
   # Einstellung des Divera Autologin-Key für die Anzeige
@@ -62,19 +63,28 @@ case $AUSWAHL in
     	echo "------------------------------------------------------------------------------"
     	echo -e "Der Autologin-Key wurde auf ${LIGHT_CYAN}$AUTOLOGINANZEIGE${NORMAL_COLOR} geändert."
     	sleep 1
+	let "i--"
   ;;
 
   # Einstellung der Betriebsart & Anzeigegerät
-  3) $AD4FUNCTION/anzeige.sh -c $AD4CONFIG -f konfigurieren;;
+  3) $AD4FUNCTION/anzeige.sh -c $AD4CONFIG -f konfigurieren
+     let "i--"
+  ;;
 
   # Einstellung der Einsatzdepesche Ausdrucke
-  4) $AD4FUNCTION/pdf.sh -c $AD4CONFIG -f konfigurieren;;
+  4) $AD4FUNCTION/pdf.sh -c $AD4CONFIG -f konfigurieren
+     let "i--"
+  ;;
 
   # Einstellung der Einsatzkarten Ausdrucke
-  5) $AD4FUNCTION/karte.sh -c $AD4CONFIG -f konfigurieren;;
+  5) $AD4FUNCTION/karte.sh -c $AD4CONFIG -f konfigurieren
+     let "i--"
+  ;;
 
   # Einstellung der Webcamsteuerung
-  6) $AD4FUNCTION/motion.sh -c $AD4CONFIG -f konfigurieren;;
+  6) $AD4FUNCTION/motion.sh -c $AD4CONFIG -f konfigurieren
+     let "i--"
+  ;;
 
   # Einstellungen beenden
   9)
