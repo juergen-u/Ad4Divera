@@ -122,8 +122,9 @@ function fn_motion_konfigurieren() {
       fn_motion_konfiguration_schreiben Zeit $TIME
       echo "------------------------------------------------------------------------------"
       echo "Die Anzeige wird für $TIME eingeschaltet."
-      $AD4FUNCTION/anzeige.sh -c $AD4CONFIG -f motion
       sleep 1
+      $AD4FUNCTION/anzeige.sh -c $AD4CONFIG -f no_alarm
+      clear
       break
     ;;
 
