@@ -2,7 +2,7 @@
 #Funktion Anzeige
 #Vers=2.0
 #Autor=Jürgen Unfall
-
+set -x
 #Standard Werte.
 STD_BETRIEBSART=1
 STD_OUTPUT=1
@@ -63,14 +63,24 @@ function fn_anzeige_motion() {
                 vcgencmd display_power 1
 		echo -e "$(date +"%Y-%m-%d--%H-%M-%S") ${LIGHT_GREEN}*FUNKTION*${NORMAL_COLOR} Monitor eingeschaltet, Bewegung." >> /var/log/ad4divera.log
 		sleep $TIME
-		vcgencmd display_power 0
-		echo -e "$(date +"%Y-%m-%d--%H-%M-%S") ${LIGHT_GREEN}*FUNKTION*${NORMAL_COLOR} Monitor ausgeschaltet, Bewegung." >> /var/log/ad4divera.log
+		ALARM=$(fn_parameter_auslesen 'ALARM')
+		if [ $ALARM = false ]; then
+			vcgencmd display_power 0
+			echo -e "$(date +"%Y-%m-%d--%H-%M-%S") ${LIGHT_GREEN}*FUNKTION*${NORMAL_COLOR} Monitor ausgeschaltet, Bewegung." >> /var/log/ad4divera.log
+		else
+			echo -e "$(date +"%Y-%m-%d--%H-%M-%S") ${YELLOW}*FUNKTION*${NORMAL_COLOR} Monitor bleibt an weil aktiver Einsatz anliegt!" >> /var/log/ad4divera.log
+		fi
 	elif [ $BETRIEBSART = 0 ] && [ $OUTPUT = 0 ] && [ $MOTION = 1 ] && [ $ALARM = false ]; then
                 echo 'on 0' | cec-client -s -d 1
                 echo -e "$(date +"%Y-%m-%d--%H-%M-%S") ${LIGHT_GREEN}*FUNKTION*${NORMAL_COLOR} TV eingeschaltet, Bewegung." >> /var/log/ad4divera.log
 		sleep $TIME
-		echo 'standby 0' | cec-client -s -d 1
-                echo -e "$(date +"%Y-%m-%d--%H-%M-%S") ${LIGHT_GREEN}*FUNKTION*${NORMAL_COLOR} TV ausgeschaltet, Bewegung." >> /var/log/ad4divera.log
+		ALARM=$(fn_parameter_auslesen 'ALARM')
+		if [ $ALARM = false ]; then
+			echo 'standby 0' | cec-client -s -d 1
+                	echo -e "$(date +"%Y-%m-%d--%H-%M-%S") ${LIGHT_GREEN}*FUNKTION*${NORMAL_COLOR} TV ausgeschaltet, Bewegung." >> /var/log/ad4divera.log
+		else
+			echo -e "$(date +"%Y-%m-%d--%H-%M-%S") ${YELLOW}*FUNKTION*${NORMAL_COLOR} TV bleibt an weil aktiver Einsatz anliegt!" >> /var/log/ad4divera.log
+		fi
 	elif [ $BETRIEBSART = 1 ] && [ $OUTPUT = 1 ] && [ $ALARM = false ]; then
                 vcgencmd display_power 1
                 echo -e "$(date +"%Y-%m-%d--%H-%M-%S") ${LIGHT_GREEN}*FUNKTION*${NORMAL_COLOR} Monitor eingeschaltet." >> /var/log/ad4divera.log
