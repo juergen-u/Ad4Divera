@@ -63,7 +63,7 @@ function fn_pdf_alarm() {
         	wget $DOWNLOAD_URL -O $AD4ARCHIV/$PDFNAME.pdf
 		lp -o media=A4 -n $ANZAHLPDF -o fit-to-page $AD4ARCHIV/$PDFNAME.pdf
     		if [ $? -ne 0 ]; then
-      			echo -e "$(date +"%Y-%m-%d--%H-%M-%S") ${YELLOW}*FEHLER*${NORMAL_COLOR} Ausdruck Einsatzdepesche: Es konnte kein Ausdruck erstellt werden" >> /var/log/ad4divera.log
+      			echo -e "$(date +"%Y-%m-%d--%H-%M-%S") ${LIGHT_RED}*FEHLER*${NORMAL_COLOR} Ausdruck Einsatzdepesche: Es konnte kein Ausdruck erstellt werden" >> /var/log/ad4divera.log
     		else
       			echo -e "$(date +"%Y-%m-%d--%H-%M-%S") ${LIGHT_GREEN}*FUNKTION*${NORMAL_COLOR} Ausdruck Einsatzdepesche: Es wurden $ANZAHLKARTE Ausdruck(e) erstellt" >> /var/log/ad4divera.log
     		fi
