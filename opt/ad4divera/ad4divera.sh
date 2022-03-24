@@ -17,6 +17,7 @@ IS_MONITOR_ACTIVE=true
 # PROGRAMM STARTEN
 $AD4FUNCTION/anzeige.sh -c $AD4CONFIG -f no_alarm &
 $AD4FUNCTION/browser.sh -c $AD4CONFIG -f open &
+echo -e "$(date +"%Y-%m-%d--%H-%M-%S") ${PURPLE}*AD4DIVERA WIRD GESTARTET*${NORMAL_COLOR}" >> /var/log/ad4divera.log
 
 while true; do
 	HAS_ALARM=`curl -s ${API_URL} | jq -r -j '.success'`
