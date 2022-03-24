@@ -87,7 +87,7 @@ function fn_karte_konfiguration_schreiben() {
   case $1 in
     Karten-Ausdruck)    sed -i s/^KARTE.*$/KARTE=$2/ "$KONFIGURATIONSDATEI"; echo -e "$(date +"%Y-%m-%d--%H-%M-%S") ${LIGHT_CYAN}*EINSTELLUNG GEÄNDERT*${NORMAL_COLOR} Ausdruck Einsatzkarte: Wurde auf $(fn_karte_konfiguration_lesen Karten-Ausdruck) eingestellt." >> /var/log/ad4divera.log;;
     Anzahl-Ausdruck)    sed -i s/^ANZAHLKARTE.*$/ANZAHLKARTE=$2/ "$KONFIGURATIONSDATEI"; echo -e "$(date +"%Y-%m-%d--%H-%M-%S") ${LIGHT_CYAN}*EINSTELLUNG GEÄNDERT*${NORMAL_COLOR} Ausdruck Einsatzkarte: Es werden $(fn_karte_konfiguration_lesen Anzahl-Ausdruck) Ausdrucke erstellt." >> /var/log/ad4divera.log;;
-    Login-Key)          sed -i s/^AUTOLOGINAUSDRUCK.*$/AUTOLOGINAUSDRUCK=$AUTOLOGINAUSDRUCK/ "$KONFIGURATIONSDATEI"; sed -i s/autologin.*$/autologin=$AUTOLOGINAUSDRUCK/  $AD4FUNCTION/maps.html;;
+    Login-Key)          sed -i s/^AUTOLOGINAUSDRUCK.*$/AUTOLOGINAUSDRUCK=$AUTOLOGINAUSDRUCK/ "$KONFIGURATIONSDATEI"; sudo sed -i s/autologin.*$/autologin=$AUTOLOGINAUSDRUCK/  $AD4FUNCTION/maps.html;;
   esac
 }
 
