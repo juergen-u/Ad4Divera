@@ -1,6 +1,7 @@
 #!/bin/bash
 
-source /etc/ad4divera/ad4divera.conf
+AD4CONFIG="/etc/ad4divera/ad4divera.xml"
+AD4FUNCTION="/opt/ad4divera/functions"
 source /etc/ad4divera/colored_output.txt
 
 clear
