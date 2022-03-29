@@ -1,0 +1,222 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  text-align: center;
+  background: #01204e;
+}
+a {
+  text-decoration: none;
+}
+li {
+  list-style-type: none;
+}
+h1 {
+  font-family: 'Ubuntu', sans-serif;
+  font-weight: 300;
+  color: red;
+  text-transform: uppercase;
+  font-size: 90px;
+  margin: 10px auto 0 auto;
+}
+h2, h3, a {
+  font-family: 'Ubuntu', sans-serif;
+  font-weight: 300;
+  color: #494949;
+  text-transform: uppercase;
+  font-size: 19px;
+}
+h4 {
+  color: #fff;
+  font-size: 31px;
+  font-family: 'Ubuntu', sans-serif;
+  margin: 0 auto 0 auto;
+}
+h3 {
+  font-size: 40px;
+  padding-top: 8%;
+  margin-top: 0;
+  margin-bottom: 5px;
+}
+h5, p, label {
+  font-family: 'Ubuntu', sans-serif;
+  color: #494949;
+}
+#moduls {
+  width: 1024px;
+  margin: 0 auto 0 auto;
+  display: inline-block;
+}
+#moduls h5 {
+  font-size: 16px;
+  margin: 0;
+  padding: 10px;
+}
+#moduls p {
+  width: 95%;
+  margin: 0 auto 0 auto;
+  text-transform: none;
+}
+#moduls hr {
+  width: 95%;
+  height: 1.5px;
+  background: #494949;
+  border: 0;
+}
+#moduls ul {
+  padding: 0;
+}
+#moduls ul li {
+  width: 25%;
+  float: left;
+  margin-bottom: 15px;
+  list-style-type: none;
+}
+#moduls .ov {
+  width: 245px;
+  border-radius: 10px;
+  background: #eee;
+  height: 245px;
+  margin-top: 0;
+  padding-top: 5px;
+  box-shadow: 0 5px 5px rgba(0, 0, 0, 0.3);
+}
+#moduls textarea {
+  resize: none;
+}
+#modul p, hr {
+  color: #fff;
+  max-width: 1024px;
+  margin: 10px auto 0 auto;
+}
+
+table, th, td {
+  border: 1px, solid;
+  width: 600px;
+  margin-top: 20px;
+}
+th {
+  background-color: #c6c6c6;
+}
+input[type=submit] {
+  background-color: #ca2222;
+  border: none;
+  border-radius: 10px;
+  color: #fff;
+  padding: 16px 32px;
+  text-decoration: none;
+  margin: 4px 2px;
+  cursor: pointer;
+}
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 100px;
+  height: 34px;
+}
+
+.switch input {display:none;}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ca2222;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+
+input:checked + .slider {
+  background-color: #2ab934;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(66px);
+  -ms-transform: translateX(66px);
+  transform: translateX(66px);
+}
+
+/*------ ADDED CSS ---------*/
+.on
+{
+  display: none;
+}
+
+.on, .off
+{
+  color: white;
+  position: absolute;
+  transform: translate(-50%,-50%);
+  top: 50%;
+  left: 50%;
+  font-size: 10px;
+  font-family: Verdana, sans-serif;
+}
+
+input:checked+ .slider .on
+{display: block;}
+
+input:checked + .slider .off
+{display: none;}
+
+/*--------- END --------*/
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+
+/**************************************/
+/* MEDIA QUERIES **********************/
+/**************************************/
+@media screen and (max-width: 1024px) {
+  #moduls ul li {
+    width: 50%;
+    float: left;
+  }
+  #moduls .ov {
+    width: 245px;
+    margin: 0 auto 0 auto;
+  }
+  #moduls {
+    width: 95%;
+  }
+  #modul {
+    max-width: 100%;
+  }
+}
+@media screen and (max-width: 600px) {
+  h1 {
+    font-size: 70px;
+  }
+  #moduls ul li {
+    width: 100%;
+    float: none;
+  }
+  #moduls {
+    width: 95%;
+  }
+}
