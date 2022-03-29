@@ -14,7 +14,7 @@
 
 <?php
 $xml=simplexml_load_file("/etc/ad4divera/ad4divera.xml") or die("Error: Cannot create object");
-
+$heute = date("Y-m-d--H-i-s");
 if(isset($_POST['update'])){
   $accesskey2xml = $_POST['accesskey2xml'];
   $autologinanzeige2xml = $_POST['autologinanzeige2xml'];
@@ -22,35 +22,45 @@ if(isset($_POST['update'])){
   $betriebsart2xml = $_POST['betriebsart2xml'];
     if ($betriebsart2xml == on) {
         $betriebsart2xml = 1;
+	error_log("$heute *WEB-FRONTEND* Betriebsart wurde auf 'Immer an' geändert. \n", 3, "/var/log/ad4divera.log");
         } else {
         $betriebsart2xml = 0;
+	error_log("$heute *WEB-FRONTEND* Betriebsart wurde auf 'Nur bei Einsatz' geändert. \n", 3, "/var/log/ad4divera.log");
         }
   $anzeigegeraet2xml = $_POST['anzeigegeraet2xml'];
     if ($anzeigegeraet2xml == on) {
         $anzeigegeraet2xml = 1;
+	error_log("$heute *WEB-FRONTEND* Anzeigegerät wurde auf 'Monitor' geändert. \n", 3, "/var/log/ad4divera.log");
         } else {
         $anzeigegeraet2xml = 0;
+	error_log("$heute *WEB-FRONTEND* Anzeigegerät wurde auf 'TV' geändert. \n", 3, "/var/log/ad4divera.log");
         }
   $pdf2xml = $_POST['pdf2xml'];
     if ($pdf2xml == on) {
         $pdf2xml = 1;
+	error_log("$heute *WEB-FRONTEND* Ausdruck Einsatzdepesche wurde auf 'Ja' geändert. \n", 3, "/var/log/ad4divera.log");
         } else {
         $pdf2xml = 0;
+	error_log("$heute *WEB-FRONTEND* Ausdruck Einsatzdepesche wurde auf 'Nein' geändert. \n", 3, "/var/log/ad4divera.log");
         }
   $anzahlpdf2xml = $_POST['anzahlpdf2xml'];
   $karte2xml = $_POST['karte2xml'];
     if ($karte2xml == on) {
         $karte2xml = 1;
+	error_log("$heute *WEB-FRONTEND* Ausdruck Einsatzkarte wurde auf 'Ja' geändert. \n", 3, "/var/log/ad4divera.log");
         } else {
         $karte2xml = 0;
+	error_log("$heute *WEB-FRONTEND* Ausdruck Einsatzkarte wurde auf 'Nein' geändert. \n", 3, "/var/log/ad4divera.log");
         }
   $anzahlkarte2xml = $_POST['anzahlkarte2xml'];
   $motion2xml = $_POST['motion2xml'];
     if ($motion2xml == on) {
         $motion2xml = 1;
 	$betriebsart2xml = 0;
+	error_log("$heute *WEB-FRONTEND* Bewegungserkennung wurde auf 'Ja' geändert. \n", 3, "/var/log/ad4divera.log");
         } else {
         $motion2xml = 0;
+	error_log("$heute *WEB-FRONTEND* Bewegungserkennung wurde auf 'Nein' geändert. \n", 3, "/var/log/ad4divera.log");
         }
   $time2xml = $_POST['time2xml'];
   $xml->ACCESSKEY = $accesskey2xml;
@@ -65,6 +75,7 @@ if(isset($_POST['update'])){
   $xml->MOTION = $motion2xml;
   $xml->TIME = $time2xml;
   file_put_contents('/etc/ad4divera/ad4divera.xml', $xml->asXML());
+  shell_exec('/opt/ad4divera/functions/anzeige.sh -c /etc/ad4divera/ad4divera.xml -f no_alarm');
 }
 ?>
 
