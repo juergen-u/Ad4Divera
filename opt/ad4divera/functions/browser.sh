@@ -35,8 +35,8 @@ function fn_help() {
 function fn_parameter_auslesen(){
 #Funktion zum Setzen eines Standard Wertes muss noch implementiert werden.
 
-if [[ -n $(sed -n s/^$1=//p "$KONFIGURATIONSDATEI") ]]; then
-        sed -n s/^$1=//p "$KONFIGURATIONSDATEI"
+if [[ -n $(grep -oP '(?<=<'$1'>).*?(?=</'$1'>)' $KONFIGURATIONSDATEI) ]]; then
+        grep -oP '(?<=<'$1'>).*?(?=</'$1'>)' $KONFIGURATIONSDATEI
     else
         eval echo \${$STD_$1}
     fi

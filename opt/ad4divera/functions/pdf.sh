@@ -46,8 +46,8 @@ function fn_help() {
 function fn_parameter_auslesen(){
 #Funktion zum Setzen eines Standard Wertes muss noch implementiert werden.
 
-if [[ -n $(sed -n s/^$1=//p "$KONFIGURATIONSDATEI") ]]; then
-        sed -n s/^$1=//p "$KONFIGURATIONSDATEI"
+if [[ -n $(grep -oP '(?<=<'$1'>).*?(?=</'$1'>)' $KONFIGURATIONSDATEI) ]]; then
+        grep -oP '(?<=<'$1'>).*?(?=</'$1'>)' $KONFIGURATIONSDATEI
     else
         eval echo \${$STD_$1}
     fi
@@ -85,8 +85,8 @@ function fn_pdf_konfiguration_lesen() {
 
 function fn_pdf_konfiguration_schreiben() {
   case $1 in
-    PDF-Ausdruck)    sed -i s/^DOWNLOAD.*$/DOWNLOAD=$2/ "$KONFIGURATIONSDATEI"; echo -e "$(date +"%Y-%m-%d--%H-%M-%S") ${LIGHT_CYAN}*EINSTELLUNG GEÄNDERT*${NORMAL_COLOR} Ausdruck Einsatzdepesche: Wurde auf $(fn_pdf_konfiguration_lesen PDF-Ausdruck) eingestellt." >> /var/log/ad4divera.log;;
-    Anzahl-Ausdruck)    sed -i s/^ANZAHLPDF.*$/ANZAHLPDF=$2/ "$KONFIGURATIONSDATEI"; echo -e "$(date +"%Y-%m-%d--%H-%M-%S") ${LIGHT_CYAN}*EINSTELLUNG GEÄNDERT*${NORMAL_COLOR} Ausdruck Einsatzdepesche: Es werden $(fn_pdf_konfiguration_lesen Anzahl-Ausdruck) Ausdrucke erstellt." >> /var/log/ad4divera.log;;
+    PDF-Ausdruck)    sed -i '/<\/DOWNLOAD>/ s/.*/<DOWNLOAD>'$2'<\/DOWNLOAD>/' "$KONFIGURATIONSDATEI"; echo -e "$(date +"%Y-%m-%d--%H-%M-%S") ${LIGHT_CYAN}*EINSTELLUNG GEÄNDERT*${NORMAL_COLOR} Ausdruck Einsatzdepesche: Wurde auf $(fn_pdf_konfiguration_lesen PDF-Ausdruck) eingestellt." >> /var/log/ad4divera.log;;
+    Anzahl-Ausdruck)    sed -i '/<\/ANZAHLPDF>/ s/.*/<ANZAHLPDF>'$2'<\/ANZAHLPDF>/' "$KONFIGURATIONSDATEI"; echo -e "$(date +"%Y-%m-%d--%H-%M-%S") ${LIGHT_CYAN}*EINSTELLUNG GEÄNDERT*${NORMAL_COLOR} Ausdruck Einsatzdepesche: Es werden $(fn_pdf_konfiguration_lesen Anzahl-Ausdruck) Ausdrucke erstellt." >> /var/log/ad4divera.log;;
   esac
 }
 

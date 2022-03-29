@@ -47,8 +47,8 @@ function fn_help() {
 function fn_parameter_auslesen(){
 #Funktion zum Setzen eines Standard Wertes muss noch implementiert werden.
 
-if [[ -n $(sed -n s/^$1=//p "$KONFIGURATIONSDATEI") ]]; then
-        sed -n s/^$1=//p "$KONFIGURATIONSDATEI"
+if [[ -n $(grep -oP '(?<=<'$1'>).*?(?=</'$1'>)' $KONFIGURATIONSDATEI) ]]; then
+        grep -oP '(?<=<'$1'>).*?(?=</'$1'>)' $KONFIGURATIONSDATEI
     else
         eval echo \${$STD_$1}
     fi
@@ -85,9 +85,9 @@ function fn_karte_konfiguration_lesen() {
 
 function fn_karte_konfiguration_schreiben() {
   case $1 in
-    Karten-Ausdruck)    sed -i s/^KARTE.*$/KARTE=$2/ "$KONFIGURATIONSDATEI"; echo -e "$(date +"%Y-%m-%d--%H-%M-%S") ${LIGHT_CYAN}*EINSTELLUNG GEÄNDERT*${NORMAL_COLOR} Ausdruck Einsatzkarte: Wurde auf $(fn_karte_konfiguration_lesen Karten-Ausdruck) eingestellt." >> /var/log/ad4divera.log;;
-    Anzahl-Ausdruck)    sed -i s/^ANZAHLKARTE.*$/ANZAHLKARTE=$2/ "$KONFIGURATIONSDATEI"; echo -e "$(date +"%Y-%m-%d--%H-%M-%S") ${LIGHT_CYAN}*EINSTELLUNG GEÄNDERT*${NORMAL_COLOR} Ausdruck Einsatzkarte: Es werden $(fn_karte_konfiguration_lesen Anzahl-Ausdruck) Ausdrucke erstellt." >> /var/log/ad4divera.log;;
-    Login-Key)          sed -i s/^AUTOLOGINAUSDRUCK.*$/AUTOLOGINAUSDRUCK=$AUTOLOGINAUSDRUCK/ "$KONFIGURATIONSDATEI"; sudo sed -i s/autologin.*$/autologin=$AUTOLOGINAUSDRUCK/  $AD4FUNCTION/maps.html;;
+    Karten-Ausdruck)    sed -i '/<\/KARTE>/ s/.*/<KARTE>'$2'<\/KARTE>/' "$KONFIGURATIONSDATEI"; echo -e "$(date +"%Y-%m-%d--%H-%M-%S") ${LIGHT_CYAN}*EINSTELLUNG GEÄNDERT*${NORMAL_COLOR} Ausdruck Einsatzkarte: Wurde auf $(fn_karte_konfiguration_lesen Karten-Ausdruck) eingestellt." >> /var/log/ad4divera.log;;
+    Anzahl-Ausdruck)    sed -i '/<\/ANZAHLKARTE>/ s/.*/<ANZAHLKARTE>'$2'<\/ANZAHLKARTE>/' "$KONFIGURATIONSDATEI"; echo -e "$(date +"%Y-%m-%d--%H-%M-%S") ${LIGHT_CYAN}*EINSTELLUNG GEÄNDERT*${NORMAL_COLOR} Ausdruck Einsatzkarte: Es werden $(fn_karte_konfiguration_lesen Anzahl-Ausdruck) Ausdrucke erstellt." >> /var/log/ad4divera.log;;
+    Login-Key)          sed -i '/<\/AUTOLOGINAUSDRUCK> s/.*/<AUTOLOGINAUSDRUCK>'$AUTOLOGINAUSDRUCK'<\/AUTOLOGINAUSDRUCK>/' "$KONFIGURATIONSDATEI"; sudo sed -i s/autologin.*$/autologin=$AUTOLOGINAUSDRUCK/  $AD4FUNCTION/maps.html;;
   esac
 }
 

@@ -44,8 +44,8 @@ function fn_help() {
 function fn_parameter_auslesen(){
 #Funktion zum Setzen eines Standard Wertes muss noch implementiert werden.
 
-if [[ -n $(sed -n s/^$1=//p "$KONFIGURATIONSDATEI") ]]; then
-        sed -n s/^$1=//p "$KONFIGURATIONSDATEI"
+if [[ -n $(grep -oP '(?<=<'$1'>).*?(?=</'$1'>)' $KONFIGURATIONSDATEI) ]]; then
+        grep -oP '(?<=<'$1'>).*?(?=</'$1'>)' $KONFIGURATIONSDATEI
     else
         eval echo \${$STD_$1}
     fi
@@ -74,9 +74,9 @@ function fn_motion_konfiguration_lesen() {
 
 function fn_motion_konfiguration_schreiben() {
   case $1 in
-    Motion)    sed -i s/^MOTION.*$/MOTION=$2/ "$KONFIGURATIONSDATEI"; echo -e "$(date +"%Y-%m-%d--%H-%M-%S") ${LIGHT_CYAN}*EINSTELLUNG GEÄNDERT*${NORMAL_COLOR} Bewegungserkennung: Wurde auf $(fn_motion_konfiguration_lesen Motion) eingestellt." >> /var/log/ad4divera.log;;
-    Zeit)    sed -i s/^TIME.*$/TIME=$2/ "$KONFIGURATIONSDATEI"; echo -e "$(date +"%Y-%m-%d--%H-%M-%S") ${LIGHT_CYAN}*EINSTELLUNG GEÄNDERT*${NORMAL_COLOR} Bewegungserkennung: Die Zeit wurde auf $(fn_motion_konfiguration_lesen Zeit) Sekunden eingestellt." >> /var/log/ad4divera.log;;
-    Betriebsart)    sed -i s/^BETRIEBSART.*$/BETRIEBSART=$2/ "$KONFIGURATIONSDATEI"; echo -e "$(date +"%Y-%m-%d--%H-%M-%S") ${LIGHT_CYAN}*EINSTELLUNG GEÄNDERT*${NORMAL_COLOR} Betriebsart wurde auf $(fn_motion_konfiguration_lesen Betriebsart) geändert" >> /var/log/ad4divera.log;;
+    Motion)    sed -i '/<\/MOTION>/ s/.*/<MOTION>'$2'<\/MOTION>/' "$KONFIGURATIONSDATEI"; echo -e "$(date +"%Y-%m-%d--%H-%M-%S") ${LIGHT_CYAN}*EINSTELLUNG GEÄNDERT*${NORMAL_COLOR} Bewegungserkennung: Wurde auf $(fn_motion_konfiguration_lesen Motion) eingestellt." >> /var/log/ad4divera.log;;
+    Zeit)    sed -i '/<\/TIME>/ s/.*/<TIME>'$2'<\/TIME>/' "$KONFIGURATIONSDATEI"; echo -e "$(date +"%Y-%m-%d--%H-%M-%S") ${LIGHT_CYAN}*EINSTELLUNG GEÄNDERT*${NORMAL_COLOR} Bewegungserkennung: Die Zeit wurde auf $(fn_motion_konfiguration_lesen Zeit) Sekunden eingestellt." >> /var/log/ad4divera.log;;
+    Betriebsart)    sed -i '/<\/BETRIEBSART>/ s/.*/<BETRIEBSART>'$2'<\/BETRIEBSART>/' "$KONFIGURATIONSDATEI"; echo -e "$(date +"%Y-%m-%d--%H-%M-%S") ${LIGHT_CYAN}*EINSTELLUNG GEÄNDERT*${NORMAL_COLOR} Betriebsart wurde auf $(fn_motion_konfiguration_lesen Betriebsart) geändert" >> /var/log/ad4divera.log;;
   esac
 }
 
