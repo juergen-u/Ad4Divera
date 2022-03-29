@@ -68,7 +68,7 @@ while true; do
 
 	if [ $HAS_ALARM = true ] && [ $IS_MONITOR_ACTIVE = false ]; then
 		echo -e "$(date +"%Y-%m-%d--%H-%M-%S") ${LIGHT_RED}..::EINSATZ::..${NORMAL_COLOR}" >> /var/log/ad4divera.log
-		sed -i s/^ALARM.*$/ALARM=$HAS_ALARM/ $AD4CONFIG
+		sed -i '/<\/ALARM>/ s/.*/<ALARM>'$HAS_ALARM'<\/ALARM>/' "$KONFIGURATIONSDATEI"
 
 		## MONITOR/TV EINSCHALTEN
 		$AD4FUNCTION/anzeige.sh -c $AD4CONFIG -f alarm
@@ -82,7 +82,7 @@ while true; do
       		IS_MONITOR_ACTIVE=true
 
     	elif [ $HAS_ALARM = false ] && [ $IS_MONITOR_ACTIVE = true ]; then
-		sed -i s/^ALARM.*$/ALARM=$HAS_ALARM/ $AD4CONFIG
+		sed -i '/<\/ALARM>/ s/.*/<ALARM>'$HAS_ALARM'<\/ALARM>/' "$KONFIGURATIONSDATEI"
 
 		$AD4FUNCTION/anzeige.sh -c $AD4CONFIG -f no_alarm
 
