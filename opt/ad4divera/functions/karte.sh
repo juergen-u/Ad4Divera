@@ -97,8 +97,6 @@ function fn_karte_uebersicht() {
   if [ $KARTE = 1 ]; then
       echo -n "Anzahl Ausdrucke:          "
       fn_karte_konfiguration_lesen Anzahl-Ausdruck
-      echo -n "Autologin-Key Karten:      "
-      fn_karte_konfiguration_lesen Login-Key
   fi
 }
 

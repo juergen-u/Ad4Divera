@@ -66,6 +66,7 @@ if(isset($_POST['update'])){
   $xml->TIME = $time2xml;
   file_put_contents('/etc/ad4divera/ad4divera.xml', $xml->asXML());
   error_log("$heute *WEB-FRONTEND* Einstellungen wurde geändert. \n", 3, "/var/log/ad4divera.log");
+  shell_exec('/opt/ad4divera/functions/keys.sh -c /etc/ad4divera/ad4divera.xml -f web');
   shell_exec('/opt/ad4divera/functions/anzeige.sh -c /etc/ad4divera/ad4divera.xml -f no_alarm');
 }
 ?>
