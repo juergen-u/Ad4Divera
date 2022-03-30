@@ -121,6 +121,7 @@ if(isset($_POST['update'])){
           <font color="green"><b>Immer an</b></font><br>
           sein?</p>
           <br>
+	  <br>
           <label class="switch">
             <input type="checkbox" name="betriebsart2xml" id="togBtn" <?php if($xml->BETRIEBSART == '1') echo 'checked'; ?>>
             <div class="slider round">
@@ -144,6 +145,7 @@ if(isset($_POST['update'])){
           <br>
           <br>
           <br>
+	  <br>
           <label class="switch">
             <input type="checkbox" name="anzeigegeraet2xml" id="togBtn" <?php if($xml->OUTPUT == '1') echo 'checked'; ?>>
             <div class="slider round">
@@ -162,6 +164,7 @@ if(isset($_POST['update'])){
         <p>Soll das Divera Einsatzprotokoll ausgedruckt werden?</p>
           <br>
           <br>
+	  <br>
           <label for="anzahlpdf2xml">Anzahl Ausdrucke:</label>
           <input type="text" name="anzahlpdf2xml" size="4" value="<?php echo $xml->ANZAHLPDF ?>">
           <br>
@@ -183,6 +186,7 @@ if(isset($_POST['update'])){
         <h2>Einsatzkarte</h2>
         <p>Soll die Einsatzkarte (zweiter Divera-Monitor) ausgedruckt werden?</p>
           <br>
+	  <br>
           <label for="anzahlkarte2xml">Anzahl Ausdrucke:</label>
           <input type="text" name="anzahlkarte2xml" size="4" value="<?php echo $xml->ANZAHLKARTE ?>">
           <br>
@@ -205,6 +209,7 @@ if(isset($_POST['update'])){
         <p>Soll der Monitor/TV bei Bewegung an gehen?</p>
           <br>
           <br>
+	  <br>
           <label for="time2xml">Sekunden:</label>
           <input type="text" name="time2xml" size="4" value="<?php echo $xml->TIME ?>">
           <br>
@@ -229,6 +234,7 @@ if(isset($_POST['update'])){
           <input type="password" name="newPW" size="25" placeholder="neues Passwort">
           <p>Bestätigen:</p>
           <input type="password" name="newPW" size="25" placeholder="Bestätigen">
+	  <br>
 	  <br>
 	  <br>
             <input type="button" name="nwPWB" value="Senden">
