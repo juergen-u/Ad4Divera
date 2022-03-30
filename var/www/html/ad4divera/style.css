@@ -154,6 +154,16 @@ input:checked + .slider:before {
   -ms-transform: translateX(66px);
   transform: translateX(66px);
 }
+input[type=button] {
+  background-color: #dece00;
+  border: none;
+  border-radius: 34px;
+  color: #494949;
+  width: 100px;
+  height: 34px;
+  cursor: pointer;
+}
+
 
 /*------ ADDED CSS ---------*/
 .on

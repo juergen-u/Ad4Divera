@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <meta http-equiv="refresh" content="10">
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -66,7 +67,13 @@ if(isset($_POST['update'])){
   $xml->TIME = $time2xml;
   file_put_contents('/etc/ad4divera/ad4divera.xml', $xml->asXML());
   error_log("$heute *WEB-FRONTEND* Einstellungen wurde geändert. \n", 3, "/var/log/ad4divera.log");
-  shell_exec('/opt/ad4divera/functions/keys.sh -c /etc/ad4divera/ad4divera.xml -f web');
+  $myfile = fopen("maps.html", "w") or die("Unable to open file!");
+  $autologin = $xml->AUTOLOGINAUSDRUCK;
+  $maps1 = "<!DOCTYPE html>\n<html>\n<body>\n<iframe src='https://app.divera247.com/monitor/1.html?autologin=";
+  $maps2 = "'\n width='1920' height='1200' style='border:none'></iframe>\n</body>\n</html>\n";
+  $ready = $maps1 . $autologin . $maps2;
+  fwrite($myfile, $ready);
+  fclose($myfile);
   shell_exec('/opt/ad4divera/functions/anzeige.sh -c /etc/ad4divera/ad4divera.xml -f no_alarm');
 }
 ?>
@@ -211,6 +218,20 @@ if(isset($_POST['update'])){
               <!--END-->
             </div>
           </label>
+          <br>
+      </div>
+    </li>
+    <li>
+      <div class="ov">
+        <h2>Passwort ändern</h2>
+	  <br>
+          <p>Neues Passwort:</p>
+          <input type="password" name="newPW" size="25" placeholder="neues Passwort">
+          <p>Bestätigen:</p>
+          <input type="password" name="newPW" size="25" placeholder="Bestätigen">
+	  <br>
+	  <br>
+            <input type="button" name="nwPWB" value="Senden">
           <br>
       </div>
     </li>

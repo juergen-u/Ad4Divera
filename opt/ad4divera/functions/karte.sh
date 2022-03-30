@@ -59,7 +59,7 @@ if [[ -n $(grep -oP '(?<=<'$1'>).*?(?=</'$1'>)' $KONFIGURATIONSDATEI) ]]; then
 function fn_karte_alarm() {
 	if [ $KARTE = 1 ]; then
     		BILDNAME=$(date +"%Y-%m-%d--%H-%M-%S")
-		wkhtmltoimage --width 1920 --height 1280 --javascript-delay 30000 $AD4FUNCTION/maps.html $AD4ARCHIV/$BILDNAME.jpg
+		wkhtmltoimage --width 1920 --height 1280 --javascript-delay 30000 /var/www/html/ad4divera/maps.html $AD4ARCHIV/$BILDNAME.jpg
 		lp -o media=A4 -n $ANZAHLKARTE -o fit-to-page $AD4ARCHIV/$BILDNAME.jpg
     		if [ $? -ne 0 ]; then
       			echo -e "$(date +"%Y-%m-%d--%H-%M-%S") ${LIGHT_RED}*FEHLER*${NORMAL_COLOR} Ausdruck Einsatzkarte: Es konnte kein Ausdruck erstellt werden" >> /var/log/ad4divera.log
@@ -87,7 +87,9 @@ function fn_karte_konfiguration_schreiben() {
   case $1 in
     Karten-Ausdruck)    sed -i '/<\/KARTE>/ s/.*/<KARTE>'$2'<\/KARTE>/' "$KONFIGURATIONSDATEI"; echo -e "$(date +"%Y-%m-%d--%H-%M-%S") ${LIGHT_CYAN}*EINSTELLUNG GEÄNDERT*${NORMAL_COLOR} Ausdruck Einsatzkarte: Wurde auf $(fn_karte_konfiguration_lesen Karten-Ausdruck) eingestellt." >> /var/log/ad4divera.log;;
     Anzahl-Ausdruck)    sed -i '/<\/ANZAHLKARTE>/ s/.*/<ANZAHLKARTE>'$2'<\/ANZAHLKARTE>/' "$KONFIGURATIONSDATEI"; echo -e "$(date +"%Y-%m-%d--%H-%M-%S") ${LIGHT_CYAN}*EINSTELLUNG GEÄNDERT*${NORMAL_COLOR} Ausdruck Einsatzkarte: Es werden $(fn_karte_konfiguration_lesen Anzahl-Ausdruck) Ausdrucke erstellt." >> /var/log/ad4divera.log;;
-    Login-Key)          sed -i '/<\/AUTOLOGINAUSDRUCK> s/.*/<AUTOLOGINAUSDRUCK>'$AUTOLOGINAUSDRUCK'<\/AUTOLOGINAUSDRUCK>/' "$KONFIGURATIONSDATEI"; sudo sed -i s/autologin.*$/autologin=$AUTOLOGINAUSDRUCK/  $AD4FUNCTION/maps.html;;
+    Login-Key) sed -i '/<\/AUTOLOGINAUSDRUCK>/ s/.*/<AUTOLOGINAUSDRUCK>'$AUTOLOGINAUSDRUCK'<\/AUTOLOGINAUSDRUCK>/' "$KONFIGURATIONSDATEI";
+               sudo sed -i s/autologin\=.*$/autologin=$AUTOLOGINAUSDRUCK/  /var/www/html/ad4divera/maps.html
+    ;;
   esac
 }
 

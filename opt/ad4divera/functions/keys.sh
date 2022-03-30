@@ -11,7 +11,7 @@ source /etc/ad4divera/colored_output.txt
 
 function main(){
 if [[ "$1" = @("-?"|"-h"|"--help") ]]; then fn_help;
-elif [[ $1 = "-c" ]] && [[ -f $2 ]] && [[ $3 = "-f" ]] && [[ $4 = @(uebersicht|konfigurieren|web) ]]; then
+elif [[ $1 = "-c" ]] && [[ -f $2 ]] && [[ $3 = "-f" ]] && [[ $4 = @(uebersicht|konfigurieren) ]]; then
     #Konfigurationsdatei Einbinden
     KONFIGURATIONSDATEI=$2
     AD4CONFIG=$(fn_parameter_auslesen 'AD4CONFIG')
@@ -28,7 +28,6 @@ fi
 case $4 in
     uebersicht)     fn_keys_uebersicht ;;
     konfigurieren)  fn_keys_konfigurieren ;;
-    web)            fn_keys_web ;;
 esac
 exit 0
 }
@@ -67,17 +66,9 @@ function fn_keys_konfiguration_schreiben() {
     Accesskey) sed -i '/<\/ACCESSKEY>/ s/.*/<ACCESSKEY>'$ACCESSKEY'<\/ACCESSKEY>/' "$KONFIGURATIONSDATEI"; echo -e "$(date +"%Y-%m-%d--%H-%M-%S") ${LIGHT_CYAN}*EINSTELLUNG GEÄNDERT*${NORMAL_COLOR} Acesskey geändert." >> /var/log/ad4divera.log;;
     Autologinanzeige) sed -i '/<\/AUTOLOGINANZEIGE>/ s/.*/<AUTOLOGINANZEIGE>'$AUTOLOGINANZEIGE'<\/AUTOLOGINANZEIGE>/' "$KONFIGURATIONSDATEI"; echo -e "$(date +"%Y-%m-%d--%H-%M-%S") ${LIGHT_CYAN}*EINSTELLUNG GEÄNDERT*${NORMAL_COLOR} Autologin-Key Anzeige geändert." >> /var/log/ad4divera.log;;
     Autologinausdruck) sed -i '/<\/AUTOLOGINAUSDRUCK>/ s/.*/<AUTOLOGINAUSDRUCK>'$AUTOLOGINAUSDRUCK'<\/AUTOLOGINAUSDRUCK>/' "$KONFIGURATIONSDATEI"; echo -e "$(date +"%Y-%m-%d--%H-%M-%S") ${LIGHT_CYAN}*EINSTELLUNG GEÄNDERT*${NORMAL_COLOR} Autologin-Key Ausdruck geändert" >> /var/log/ad4divera.log;;
-    Web) sed -i s/autologin.*$/autologin=$AUTOLOGINAUSDRUCK/ $AD4FUNCTION/maps.html;;
   esac
 }
-function fn_keys_web() {
-#  fn_keys_konfiguration_lesen Accesskey
-#  fn_keys_konfiguration_schreiben Accesskey $ACCESSKEY
-#  fn_keys_konfiguration_lesen Autologinanzeige
-#  fn_keys_konfiguration_schreiben Autologinanzeige $AUTOLOGINANZEIGE
-  fn_keys_konfiguration_lesen Autologinausdruck
-  fn_keys_konfiguration_schreiben Web $AUTOLOGINAUSDRUCK
-}
+
 function fn_keys_uebersicht() {
   echo -n "Divera-Access-Key:         "
   fn_keys_konfiguration_lesen Accesskey
