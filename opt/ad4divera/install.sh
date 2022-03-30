@@ -6,7 +6,7 @@ echo "Wir installieren nun alle benötigten Programme, "
 echo "dies kann ein paar Minuten dauern."
 echo "------------------------------------------------------------------------------"
 sleep 1
-sudo apt install jq unclutter cec-utils xdotool wkhtmltopdf wget -y
+sudo apt install jq unclutter cec-utils xdotool wkhtmltopdf wget motion apache2 php php-xml -y
 sudo apt install --no-install-recommends firefox-esr -y
 sudo chmod +x ~/Ad4Divera/ad4divera.sh
 sudo chmod +x ~/Ad4Divera/einstellungen.sh
