@@ -2,7 +2,7 @@
 #Funktion Anzeige
 #Vers=2.0
 #Autor=Jürgen Unfall
-
+set -x
 #Standard Werte.
 STD_BETRIEBSART=1
 STD_OUTPUT=1

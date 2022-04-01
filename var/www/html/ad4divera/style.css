@@ -3,7 +3,7 @@ html, body {
   padding: 0;
   height: 100%;
   text-align: center;
-  background: #01204e;
+  background: #082042;
 }
 a {
   text-decoration: none;
@@ -14,7 +14,7 @@ li {
 h1 {
   font-family: 'Ubuntu', sans-serif;
   font-weight: 300;
-  color: red;
+  color: #fa0019;
   text-transform: uppercase;
   font-size: 90px;
   margin: 10px auto 0 auto;
@@ -62,6 +62,7 @@ h5, p, label {
   height: 1.5px;
   background: #494949;
   border: 0;
+  margin-bottom: 10px;
 }
 #moduls ul {
   padding: 0;
@@ -69,7 +70,7 @@ h5, p, label {
 #moduls ul li {
   width: 25%;
   float: left;
-  margin-bottom: 15px;
+  margin-bottom: 10px;
   list-style-type: none;
 }
 #moduls .ov {
@@ -89,17 +90,8 @@ h5, p, label {
   max-width: 1024px;
   margin: 10px auto 0 auto;
 }
-
-table, th, td {
-  border: 1px, solid;
-  width: 600px;
-  margin-top: 20px;
-}
-th {
-  background-color: #c6c6c6;
-}
 input[type=submit] {
-  background-color: #ca2222;
+  background-color: #fa0019;
   border: none;
   border-radius: 10px;
   color: #fff;
@@ -114,9 +106,7 @@ input[type=submit] {
   width: 100px;
   height: 34px;
 }
-
 .switch input {display:none;}
-
 .slider {
   position: absolute;
   cursor: pointer;
@@ -124,11 +114,10 @@ input[type=submit] {
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: #ca2222;
+  background-color: #fa0019;
   -webkit-transition: .4s;
   transition: .4s;
 }
-
 .slider:before {
   position: absolute;
   content: "";
@@ -140,37 +129,31 @@ input[type=submit] {
   -webkit-transition: .4s;
   transition: .4s;
 }
-
 input:checked + .slider {
   background-color: #2ab934;
 }
-
 input:focus + .slider {
   box-shadow: 0 0 1px #2196F3;
 }
-
 input:checked + .slider:before {
   -webkit-transform: translateX(66px);
   -ms-transform: translateX(66px);
   transform: translateX(66px);
 }
 input[type=button] {
-  background-color: #dece00;
+  background-color: #fa0019;
   border: none;
   border-radius: 34px;
-  color: #494949;
+  color: #fff;
   width: 100px;
   height: 34px;
   cursor: pointer;
 }
-
-
 /*------ ADDED CSS ---------*/
 .on
 {
   display: none;
 }
-
 .on, .off
 {
   color: white;
@@ -181,7 +164,6 @@ input[type=button] {
   font-size: 10px;
   font-family: Verdana, sans-serif;
 }
-
 input:checked+ .slider .on
 {display: block;}
 

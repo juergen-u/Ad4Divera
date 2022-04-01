@@ -15,6 +15,22 @@
 <?php
 $xml=simplexml_load_file("/etc/ad4divera/ad4divera.xml") or die("Error: Cannot create object");
 $heute = date("Y-m-d--H-i-s");
+
+$tempcpu = exec('vcgencmd measure_temp');
+$tempcpu = str_replace('temp=','',$tempcpu);
+$tempcpu = str_replace('\'C','',$tempcpu);
+$tempcpu = round($tempcpu, 1);
+
+$voltcpu = exec('vcgencmd measure_volts core');
+$voltcpu = str_replace('volt=','',$voltcpu);
+$voltcpu = str_replace('V','',$voltcpu);
+$voltcpu = round($voltcpu, 2);
+
+$clockcpu = exec('vcgencmd measure_clock arm');
+$clockcpu = str_replace('frequency(48)=','',$clockcpu);
+$freqcpu = $clockcpu / 1000000000;
+$freqcpu = round($freqcpu, 1);
+
 if(isset($_POST['update'])){
   $accesskey2xml = $_POST['accesskey2xml'];
   $autologinanzeige2xml = $_POST['autologinanzeige2xml'];
@@ -83,13 +99,15 @@ if(isset($_POST['update'])){
   <div id="modul">
     <hr>
     <p>Um Änderungen an der Konfiguration zu speicher immer auf Update klicken!</p>
-  <input type="submit" name="update" value="Update">
+    <br>
+  <input type="submit" name="update" value="Einstellungen speichern">
 </div>
 <div id="moduls">
   <ul>
     <li>
       <div class="ov">
         <h2>Accesskey</h2>
+	<hr>
         <textarea name="accesskey2xml" rows="3" cols="28"><?php echo $xml->ACCESSKEY; ?></textarea>
         <hr>
         <p><b>Hinweis:</b> zu finden unter <em>Verwaltung > Schnittstellen</em>.</p>
@@ -98,6 +116,7 @@ if(isset($_POST['update'])){
     <li>
       <div class="ov">
         <h2>Autologinanzeige</h2>
+        <hr>
         <textarea name="autologinanzeige2xml" rows="3" cols="28"><?php echo $xml->AUTOLOGINANZEIGE; ?></textarea>
         <hr>
         <p><b>Hinweis:</b> zu finden unter <em>Verwaltung > Setup > Monitore</em>.</p>
@@ -106,7 +125,8 @@ if(isset($_POST['update'])){
     <li>
       <div class="ov">
         <h2>Autologinausdruck</h2>
-        <textarea name="autologinausdruck2xml" rows="3" cols="28"><?php echo $xml->AUTOLOGINAUSDRUCK; ?></textarea>
+        <hr>
+	<textarea name="autologinausdruck2xml" rows="3" cols="28"><?php echo $xml->AUTOLOGINAUSDRUCK; ?></textarea>
         <hr>
         <p><b>Hinweis:</b> wird nur benötigt wenn eine Karte gedruckt werden soll.</p>
       </div>
@@ -114,10 +134,11 @@ if(isset($_POST['update'])){
     <li>
       <div class="ov">
         <h2>Betriebsart</h2>
+        <hr>
         <p>Soll der Monitor/TV<br>
-          <font color="red"><b>Nur bei Einsatz</b></font><br>
+          <font color="#fa0019"><b>Nur bei Einsatz</b></font><br>
           oder<br>
-          <font color="green"><b>Immer an</b></font><br>
+          <font color="#2ab934"><b>Immer an</b></font><br>
           sein?</p>
           <br>
 	  <br>
@@ -136,10 +157,11 @@ if(isset($_POST['update'])){
     <li>
       <div class="ov">
         <h2>Anzeigegerät</h2>
+        <hr>
         <p>Ist der RPi an einem<br>
-          <font color="red"><b>TV</b></font>
+          <font color="#fa0019"><b>TV</b></font>
           oder
-          <font color="green"><b>Monitor</b></font>
+          <font color="#2ab934"><b>Monitor</b></font>
           angeschlossen?</p>
           <br>
           <br>
@@ -160,6 +182,7 @@ if(isset($_POST['update'])){
     <li>
       <div class="ov">
         <h2>Einsatzdepesche</h2>
+        <hr>
         <p>Soll das Divera Einsatzprotokoll ausgedruckt werden?</p>
           <br>
           <br>
@@ -183,6 +206,7 @@ if(isset($_POST['update'])){
     <li>
       <div class="ov">
         <h2>Einsatzkarte</h2>
+        <hr>
         <p>Soll die Einsatzkarte (zweiter Divera-Monitor) ausgedruckt werden?</p>
           <br>
 	  <br>
@@ -205,6 +229,7 @@ if(isset($_POST['update'])){
     <li>
       <div class="ov">
         <h2>Bewegungserkennung</h2>
+        <hr>
         <p>Soll der Monitor/TV bei Bewegung an gehen?</p>
           <br>
           <br>
@@ -228,7 +253,7 @@ if(isset($_POST['update'])){
     <li>
       <div class="ov">
         <h2>Passwort ändern</h2>
-	  <br>
+        <hr>
           <p>Neues Passwort:</p>
           <input type="password" name="newPW" size="25" placeholder="neues Passwort">
           <p>Bestätigen:</p>
@@ -236,8 +261,28 @@ if(isset($_POST['update'])){
 	  <br>
 	  <br>
 	  <br>
+	  <br>
             <input type="button" name="nwPWB" value="Senden">
           <br>
+      </div>
+    </li>
+    <li>
+      <div class="ov">
+        <h2>RPi Werte</h2>
+        <hr>
+	  <?php
+	  if($tempcpu > 70) {
+        	echo "<p>CPU Temperatur:<font color=\"#fa0019\"><b> $tempcpu</b></font> °C</p>";
+	  } else if($tempcpu > 60) {
+        	echo "<p>CPU Temperatur:<font color=\"#ffbf00\"><b> $tempcpu</b></font> °C</p>";
+	  } else {
+		echo "<p>CPU Temperatur:<b> $tempcpu</b> °C</p>";
+	  }
+	  ?>
+          <br>
+          <p>CPU Spannung:<b> <?php echo $voltcpu ?></b> V</p>
+          <br>
+          <p>CPU Frequenz:<b> <?php echo $freqcpu ?></b> GHz</p>
       </div>
     </li>
   </ul>
