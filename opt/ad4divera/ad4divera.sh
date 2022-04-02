@@ -2,7 +2,6 @@
 sleep 15
 
 # CONFIG- U. FUNKTIONS-DATEI EINBINDEN
-source /etc/ad4divera/ad4divera.xml
 source /etc/ad4divera/colored_output.txt
 
 # MAUS NACH RECHTS BEWEGEN UM SICHER ZU STELLEN DAS SIE NICHT IM WEG IST
@@ -18,6 +17,7 @@ elif [[ $1 = "-c" ]] && [[ -f $2 ]] && [[ $3 = "-f" ]] && [[ $4 = @(start) ]]; t
     AD4CONFIG=$(fn_parameter_auslesen 'AD4CONFIG')
     AD4FUNCTION=$(fn_parameter_auslesen 'AD4FUNCTION')
     ACCESSKEY=$(fn_parameter_auslesen 'ACCESSKEY')
+    AUTOLOGINANZEIGE=$(fn_parameter_auslesen 'AUTOLOGINANZEIGE')
 else
     echo -e "${LIGHT_RED}Ungültige Eingabe${NORMAL_COLOR}"
     echo ""
@@ -60,7 +60,7 @@ IS_MONITOR_ACTIVE=true
 
 # PROGRAMM STARTEN
 $AD4FUNCTION/anzeige.sh -c $AD4CONFIG -f no_alarm &
-$AD4FUNCTION/browser.sh -c $AD4CONFIG -f open &
+firefox-esr --display=:0 --private-window --kiosk https://app.divera247.com/monitor/1.html?autologin=${AUTOLOGINANZEIGE}
 echo -e "$(date +"%Y-%m-%d--%H-%M-%S") ${PURPLE}*AD4DIVERA WIRD GESTARTET*${NORMAL_COLOR}" >> /var/log/ad4divera.log
 
 while true; do
