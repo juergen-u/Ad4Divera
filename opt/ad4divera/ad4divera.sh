@@ -1,5 +1,5 @@
 #!/bin/bash
-set -x
+
 # Erfasse Aktuelles Verzeichns
 VERZEICHNIS=$(pwd)
 # Ändere das Verzeichnis
