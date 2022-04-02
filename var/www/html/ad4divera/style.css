@@ -99,6 +99,8 @@ input[type=submit] {
   text-decoration: none;
   margin: 4px 2px;
   cursor: pointer;
+  -webkit-appearance: none;
+  -moz-appearance: none;
 }
 .switch {
   position: relative;
@@ -148,6 +150,8 @@ input[type=button] {
   width: 100px;
   height: 34px;
   cursor: pointer;
+  -webkit-appearance: none;
+  -moz-appearance: none;
 }
 /*------ ADDED CSS ---------*/
 .on
@@ -199,6 +203,12 @@ input:checked + .slider .off
   #modul {
     max-width: 100%;
   }
+  #modul-button {
+  position: fixed;
+  bottom: 5px;
+  right: 5px;
+  z-index: 99;
+}
 }
 @media screen and (max-width: 600px) {
   h1 {
@@ -209,6 +219,6 @@ input:checked + .slider .off
     float: none;
   }
   #moduls {
-    width: 95%;
+   width: 95%;
   }
 }

@@ -100,7 +100,9 @@ if(isset($_POST['update'])){
     <hr>
     <p>Um Änderungen an der Konfiguration zu speicher immer auf Update klicken!</p>
     <br>
-  <input type="submit" name="update" value="Einstellungen speichern">
+    <div id="modul-button">
+    <input type="submit" name="update" value="Update">
+</div>
 </div>
 <div id="moduls">
   <ul>
@@ -141,7 +143,6 @@ if(isset($_POST['update'])){
           <font color="#2ab934"><b>Immer an</b></font><br>
           sein?</p>
           <br>
-	  <br>
           <label class="switch">
             <input type="checkbox" name="betriebsart2xml" id="togBtn" <?php if($xml->BETRIEBSART == '1') echo 'checked'; ?>>
             <div class="slider round">
@@ -165,7 +166,6 @@ if(isset($_POST['update'])){
           angeschlossen?</p>
           <br>
           <br>
-          <br>
 	  <br>
           <label class="switch">
             <input type="checkbox" name="anzeigegeraet2xml" id="togBtn" <?php if($xml->OUTPUT == '1') echo 'checked'; ?>>
@@ -184,7 +184,6 @@ if(isset($_POST['update'])){
         <h2>Einsatzdepesche</h2>
         <hr>
         <p>Soll das Divera Einsatzprotokoll ausgedruckt werden?</p>
-          <br>
           <br>
 	  <br>
           <label for="anzahlpdf2xml">Anzahl Ausdrucke:</label>
@@ -209,7 +208,6 @@ if(isset($_POST['update'])){
         <hr>
         <p>Soll die Einsatzkarte (zweiter Divera-Monitor) ausgedruckt werden?</p>
           <br>
-	  <br>
           <label for="anzahlkarte2xml">Anzahl Ausdrucke:</label>
           <input type="text" name="anzahlkarte2xml" size="4" value="<?php echo $xml->ANZAHLKARTE ?>">
           <br>
@@ -233,7 +231,6 @@ if(isset($_POST['update'])){
         <p>Soll der Monitor/TV bei Bewegung an gehen?</p>
           <br>
           <br>
-	  <br>
           <label for="time2xml">Sekunden:</label>
           <input type="text" name="time2xml" size="4" value="<?php echo $xml->TIME ?>">
           <br>
@@ -258,7 +255,6 @@ if(isset($_POST['update'])){
           <input type="password" name="newPW" size="25" placeholder="neues Passwort">
           <p>Bestätigen:</p>
           <input type="password" name="newPW" size="25" placeholder="Bestätigen">
-	  <br>
 	  <br>
 	  <br>
 	  <br>
