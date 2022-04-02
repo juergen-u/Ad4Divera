@@ -1,8 +1,17 @@
 #!/bin/bash
+set -x
+# Erfasse Aktuelles Verzeichns
+VERZEICHNIS=$(pwd)
+# Ändere das Verzeichnis
+cd /opt/ad4divera
+
 sleep 15
 
 # CONFIG- U. FUNKTIONS-DATEI EINBINDEN
-source /etc/ad4divera/colored_output.txt
+source /opt/ad4divera/functions/colored_output.txt
+
+# Funktionen werden initalisert
+FUNKTION=(`ls -1 functions | awk -F"[.]+" '/.sh/{print $1}'`)
 
 # MAUS NACH RECHTS BEWEGEN UM SICHER ZU STELLEN DAS SIE NICHT IM WEG IST
 export DISPLAY=":0"
@@ -32,11 +41,9 @@ exit 0
 
 function fn_help() {
     echo "Beim Aufruf des Sktripts muss die Konfigurationsdatei übergeben werden"
-    echo -e "Beispiel: ${YELLOW}motion.sh -c /etc/ad4divera/ad4divera.conf -f {Funktion}${NORMAL_COLOR}"
+    echo -e "Beispiel: ${YELLOW}ad4divera.sh -c /etc/ad4divera/ad4divera.xml -f {Funktion}${NORMAL_COLOR}"
     echo "Zur Verfügung stehende Funktionen:"
-    echo -e "- ${LIGHT_BLUE}alarm${NORMAL_COLOR} : Ein Ausdruck der Alarmkarte wird erstellt."
-    echo -e "- ${LIGHT_BLUE}uebersicht${NORMAL_COLOR} : Die in der Konfiguration hinterlegten Parameter werden ausgegeben"
-    echo -e "- ${LIGHT_BLUE}konfigurieren${NORMAL_COLOR} : Die Kartenfunktion kann vollständig konfiguriert werden"
+    echo -e "- ${LIGHT_BLUE}start${NORMAL_COLOR} : Startet alle Programmteile von Ad4Divera."
 }
 
 function fn_parameter_auslesen(){
@@ -60,7 +67,7 @@ IS_MONITOR_ACTIVE=true
 
 # PROGRAMM STARTEN
 $AD4FUNCTION/anzeige.sh -c $AD4CONFIG -f no_alarm &
-firefox-esr --display=:0 --private-window --kiosk https://app.divera247.com/monitor/1.html?autologin=${AUTOLOGINANZEIGE}
+firefox-esr --display=:0 --private-window --kiosk https://app.divera247.com/monitor/1.html?autologin=${AUTOLOGINANZEIGE} &
 echo -e "$(date +"%Y-%m-%d--%H-%M-%S") ${PURPLE}*AD4DIVERA WIRD GESTARTET*${NORMAL_COLOR}" >> /var/log/ad4divera.log
 
 while true; do
@@ -70,21 +77,14 @@ while true; do
 		echo -e "$(date +"%Y-%m-%d--%H-%M-%S") ${LIGHT_RED}..::EINSATZ::..${NORMAL_COLOR}" >> /var/log/ad4divera.log
 		sed -i '/<\/ALARM>/ s/.*/<ALARM>'$HAS_ALARM'<\/ALARM>/' "$KONFIGURATIONSDATEI"
 
-		## MONITOR/TV EINSCHALTEN
-		$AD4FUNCTION/anzeige.sh -c $AD4CONFIG -f alarm
-
-      		## EINSATZDEPESCHE DOWNLOADEN, AUSDRUCKEN, ARCHIVIEREN
-      		$AD4FUNCTION/pdf.sh -c $AD4CONFIG -f alarm
-
-      		## KARTE DOWNLOADEN, AUSDRUCKEN, ARCHIVIEREN
-      		$AD4FUNCTION/karte.sh -c $AD4CONFIG -f alarm
+		for (( j = 0 ; j < ${#FUNKTION[@]}; j++)); do functions/${FUNKTION[$j]}.sh -c $KONFIGURATIONSDATEI -f alarm; done
 
       		IS_MONITOR_ACTIVE=true
 
     	elif [ $HAS_ALARM = false ] && [ $IS_MONITOR_ACTIVE = true ]; then
 		sed -i '/<\/ALARM>/ s/.*/<ALARM>'$HAS_ALARM'<\/ALARM>/' "$KONFIGURATIONSDATEI"
 
-		$AD4FUNCTION/anzeige.sh -c $AD4CONFIG -f no_alarm
+		for (( j = 0 ; j < ${#FUNKTION[@]}; j++)); do functions/${FUNKTION[$j]}.sh -c $KONFIGURATIONSDATEI -f no_alarm; done
 
       		IS_MONITOR_ACTIVE=false
 

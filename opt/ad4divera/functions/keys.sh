@@ -7,11 +7,11 @@
 STD_MOTION=0
 STD_TIME=10
 
-source /etc/ad4divera/colored_output.txt
+source /opt/ad4divera/functions/colored_output.txt
 
 function main(){
 if [[ "$1" = @("-?"|"-h"|"--help") ]]; then fn_help;
-elif [[ $1 = "-c" ]] && [[ -f $2 ]] && [[ $3 = "-f" ]] && [[ $4 = @(uebersicht|konfigurieren) ]]; then
+elif [[ $1 = "-c" ]] && [[ -f $2 ]] && [[ $3 = "-f" ]] && [[ $4 = @(uebersicht|konfigurieren|alarm|no_alarm) ]]; then
     #Konfigurationsdatei Einbinden
     KONFIGURATIONSDATEI=$2
     AD4CONFIG=$(fn_parameter_auslesen 'AD4CONFIG')
@@ -26,6 +26,8 @@ else
     exit 1
 fi
 case $4 in
+    alarm)          fn_keys_alarm ;;
+    no_alarm)       fn_keys_no_alarm ;;
     uebersicht)     fn_keys_uebersicht ;;
     konfigurieren)  fn_keys_konfigurieren ;;
 esac
@@ -34,9 +36,10 @@ exit 0
 
 function fn_help() {
     echo "Beim Aufruf des Sktripts muss die Konfigurationsdatei übergeben werden"
-    echo -e "Beispiel: ${YELLOW}motion.sh -c /etc/ad4divera/ad4divera.conf -f {Funktion}${NORMAL_COLOR}"
+    echo -e "Beispiel: ${YELLOW}keys.sh -c /etc/ad4divera/ad4divera.xml -f {Funktion}${NORMAL_COLOR}"
     echo "Zur Verfügung stehende Funktionen:"
-    echo -e "- ${LIGHT_BLUE}alarm${NORMAL_COLOR} : Ein Ausdruck der Alarmkarte wird erstellt."
+    echo -e "- ${LIGHT_BLUE}alarm${NORMAL_COLOR} : Stellt die Keys bereit."
+    echo -e "- ${LIGHT_BLUE}no_alarm${NORMAL_COLOR} : Das Programm bleibt in Grundstellung."
     echo -e "- ${LIGHT_BLUE}uebersicht${NORMAL_COLOR} : Die in der Konfiguration hinterlegten Parameter werden ausgegeben"
     echo -e "- ${LIGHT_BLUE}konfigurieren${NORMAL_COLOR} : Die Kartenfunktion kann vollständig konfiguriert werden"
 }
@@ -67,6 +70,14 @@ function fn_keys_konfiguration_schreiben() {
     Autologinanzeige) sed -i '/<\/AUTOLOGINANZEIGE>/ s/.*/<AUTOLOGINANZEIGE>'$AUTOLOGINANZEIGE'<\/AUTOLOGINANZEIGE>/' "$KONFIGURATIONSDATEI"; echo -e "$(date +"%Y-%m-%d--%H-%M-%S") ${LIGHT_CYAN}*EINSTELLUNG GEÄNDERT*${NORMAL_COLOR} Autologin-Key Anzeige geändert." >> /var/log/ad4divera.log;;
     Autologinausdruck) sed -i '/<\/AUTOLOGINAUSDRUCK>/ s/.*/<AUTOLOGINAUSDRUCK>'$AUTOLOGINAUSDRUCK'<\/AUTOLOGINAUSDRUCK>/' "$KONFIGURATIONSDATEI"; echo -e "$(date +"%Y-%m-%d--%H-%M-%S") ${LIGHT_CYAN}*EINSTELLUNG GEÄNDERT*${NORMAL_COLOR} Autologin-Key Ausdruck geändert" >> /var/log/ad4divera.log;;
   esac
+}
+
+function fn_keys_alarm() {
+	exit 0
+}
+
+function fn_keys_no_alarm() {
+	exit 0
 }
 
 function fn_keys_uebersicht() {

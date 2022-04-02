@@ -7,11 +7,11 @@
 STD_MOTION=0
 STD_TIME=10
 
-source /etc/ad4divera/colored_output.txt
+source /opt/ad4divera/functions/colored_output.txt
 
 function main(){
 if [[ "$1" = @("-?"|"-h"|"--help") ]]; then fn_help;
-elif [[ $1 = "-c" ]] && [[ -f $2 ]] && [[ $3 = "-f" ]] && [[ $4 = @(uebersicht|konfigurieren) ]]; then
+elif [[ $1 = "-c" ]] && [[ -f $2 ]] && [[ $3 = "-f" ]] && [[ $4 = @(uebersicht|konfigurieren|alarm|no_alarm) ]]; then
     #Konfigurationsdatei Einbinden
     KONFIGURATIONSDATEI=$2
     AD4CONFIG=$(fn_parameter_auslesen 'AD4CONFIG')
@@ -26,6 +26,8 @@ else
     exit 1
 fi
 case $4 in
+    alarm)          fn_motion_alarm ;;
+    no_alarm)       fn_motion_no_alarm ;;
     uebersicht)     fn_motion_uebersicht ;;
     konfigurieren)  fn_motion_konfigurieren ;;
 esac
@@ -34,9 +36,10 @@ exit 0
 
 function fn_help() {
     echo "Beim Aufruf des Sktripts muss die Konfigurationsdatei übergeben werden"
-    echo -e "Beispiel: ${YELLOW}motion.sh -c /etc/ad4divera/ad4divera.conf -f {Funktion}${NORMAL_COLOR}"
+    echo -e "Beispiel: ${YELLOW}motion.sh -c /etc/ad4divera/ad4divera.xml -f {Funktion}${NORMAL_COLOR}"
     echo "Zur Verfügung stehende Funktionen:"
-    echo -e "- ${LIGHT_BLUE}alarm${NORMAL_COLOR} : Ein Ausdruck der Alarmkarte wird erstellt."
+    echo -e "- ${LIGHT_BLUE}alarm${NORMAL_COLOR} : Das Programm wird deaktiviert damit der Monitor/TV an bleibt."
+    echo -e "- ${LIGHT_BLUE}no_alarm${NORMAL_COLOR} : Das Programm bleibt in Grundstellung."
     echo -e "- ${LIGHT_BLUE}uebersicht${NORMAL_COLOR} : Die in der Konfiguration hinterlegten Parameter werden ausgegeben"
     echo -e "- ${LIGHT_BLUE}konfigurieren${NORMAL_COLOR} : Die Kartenfunktion kann vollständig konfiguriert werden"
 }
@@ -78,6 +81,14 @@ function fn_motion_konfiguration_schreiben() {
     Zeit)    sed -i '/<\/TIME>/ s/.*/<TIME>'$2'<\/TIME>/' "$KONFIGURATIONSDATEI"; echo -e "$(date +"%Y-%m-%d--%H-%M-%S") ${LIGHT_CYAN}*EINSTELLUNG GEÄNDERT*${NORMAL_COLOR} Bewegungserkennung: Die Zeit wurde auf $(fn_motion_konfiguration_lesen Zeit) Sekunden eingestellt." >> /var/log/ad4divera.log;;
     Betriebsart)    sed -i '/<\/BETRIEBSART>/ s/.*/<BETRIEBSART>'$2'<\/BETRIEBSART>/' "$KONFIGURATIONSDATEI"; echo -e "$(date +"%Y-%m-%d--%H-%M-%S") ${LIGHT_CYAN}*EINSTELLUNG GEÄNDERT*${NORMAL_COLOR} Betriebsart wurde auf $(fn_motion_konfiguration_lesen Betriebsart) geändert" >> /var/log/ad4divera.log;;
   esac
+}
+
+function fn_motion_alarm() {
+	exit 0
+}
+
+function fn_motion_no_alarm() {
+	exit 0
 }
 
 function fn_motion_uebersicht() {

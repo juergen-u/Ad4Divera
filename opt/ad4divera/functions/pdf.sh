@@ -7,11 +7,11 @@
 STD_DOWNLOAD=0
 STD_ANZAHLPDF=1
 
-source /etc/ad4divera/colored_output.txt
+source /opt/ad4divera/functions/colored_output.txt
 
 function main(){
 if [[ "$1" = @("-?"|"-h"|"--help") ]]; then fn_help;
-elif [[ $1 = "-c" ]] && [[ -f $2 ]] && [[ $3 = "-f" ]] && [[ $4 = @(alarm|uebersicht|konfigurieren) ]]; then
+elif [[ $1 = "-c" ]] && [[ -f $2 ]] && [[ $3 = "-f" ]] && [[ $4 = @(alarm|no_alarm|uebersicht|konfigurieren) ]]; then
     #Konfigurationsdatei Einbinden
     KONFIGURATIONSDATEI=$2
     AD4CONFIG=$(fn_parameter_auslesen 'AD4CONFIG')
@@ -28,6 +28,7 @@ else
 fi
 case $4 in
     alarm)          fn_pdf_alarm ;;
+    no_alarm)       fn_pdf_no_alarm ;;
     uebersicht)     fn_pdf_uebersicht ;;
     konfigurieren)  fn_pdf_konfigurieren ;;
 esac
@@ -36,9 +37,10 @@ exit 0
 
 function fn_help() {
     echo "Beim Aufruf des Sktripts muss die Konfigurationsdatei übergeben werden"
-    echo -e "Beispiel: ${YELLOW}pdf.sh -c /etc/ad4divera/ad4divera.conf -f {Funktion}${NORMAL_COLOR}"
+    echo -e "Beispiel: ${YELLOW}pdf.sh -c /etc/ad4divera/ad4divera.xml -f {Funktion}${NORMAL_COLOR}"
     echo "Zur Verfügung stehende Funktionen:"
-    echo -e "- ${LIGHT_BLUE}alarm${NORMAL_COLOR} : Ein Ausdruck der Alarmkarte wird erstellt."
+    echo -e "- ${LIGHT_BLUE}alarm${NORMAL_COLOR} : Ein Ausdruck der Einsatzdepesche wird erstellt."
+    echo -e "- ${LIGHT_BLUE}no_alarm${NORMAL_COLOR} : Das Programm bleibt in Grundstellung."
     echo -e "- ${LIGHT_BLUE}uebersicht${NORMAL_COLOR} : Die in der Konfiguration hinterlegten Parameter werden ausgegeben"
     echo -e "- ${LIGHT_BLUE}konfigurieren${NORMAL_COLOR} : Die Kartenfunktion kann vollständig konfiguriert werden"
 }
@@ -88,6 +90,10 @@ function fn_pdf_konfiguration_schreiben() {
     PDF-Ausdruck)    sed -i '/<\/DOWNLOAD>/ s/.*/<DOWNLOAD>'$2'<\/DOWNLOAD>/' "$KONFIGURATIONSDATEI"; echo -e "$(date +"%Y-%m-%d--%H-%M-%S") ${LIGHT_CYAN}*EINSTELLUNG GEÄNDERT*${NORMAL_COLOR} Ausdruck Einsatzdepesche: Wurde auf $(fn_pdf_konfiguration_lesen PDF-Ausdruck) eingestellt." >> /var/log/ad4divera.log;;
     Anzahl-Ausdruck)    sed -i '/<\/ANZAHLPDF>/ s/.*/<ANZAHLPDF>'$2'<\/ANZAHLPDF>/' "$KONFIGURATIONSDATEI"; echo -e "$(date +"%Y-%m-%d--%H-%M-%S") ${LIGHT_CYAN}*EINSTELLUNG GEÄNDERT*${NORMAL_COLOR} Ausdruck Einsatzdepesche: Es werden $(fn_pdf_konfiguration_lesen Anzahl-Ausdruck) Ausdrucke erstellt." >> /var/log/ad4divera.log;;
   esac
+}
+
+function fn_pdf_no_alarm() {
+	exit 0
 }
 
 function fn_pdf_uebersicht() {

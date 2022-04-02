@@ -7,7 +7,7 @@
 STD_BETRIEBSART=1
 STD_OUTPUT=1
 
-source /etc/ad4divera/colored_output.txt
+source /opt/ad4divera/functions/colored_output.txt
 
 function main(){
 if [[ "$1" = @("-?"|"-h"|"--help") ]]; then fn_help;
@@ -39,9 +39,11 @@ exit 0
 
 function fn_help() {
     echo "Beim Aufruf des Sktripts muss die Konfigurationsdatei übergeben werden"
-    echo -e "Beispiel: ${YELLOW}anzeige.sh -c /etc/ad4divera/ad4divera.conf -f {Funktion}${NORMAL_COLOR}"
+    echo -e "Beispiel: ${YELLOW}anzeige.sh -c /etc/ad4divera/ad4divera.xml -f {Funktion}${NORMAL_COLOR}"
     echo "Zur Verfügung stehende Funktionen:"
-    echo -e "- ${LIGHT_BLUE}alarm${NORMAL_COLOR} : Ein Ausdruck der Alarmkarte wird erstellt."
+    echo -e "- ${LIGHT_BLUE}alarm${NORMAL_COLOR} : Der Monitor/TV wird eingeschaltet."
+    echo -e "- ${LIGHT_BLUE}no_alarm${NORMAL_COLOR} : Der Monitor/TV wird ausgeschaltet."
+    echo -e "- ${LIGHT_BLUE}motion${NORMAL_COLOR} : Der Monitor/TV wird bei Bewegung ein- und ausgeschaltet."
     echo -e "- ${LIGHT_BLUE}uebersicht${NORMAL_COLOR} : Die in der Konfiguration hinterlegten Parameter werden ausgegeben"
     echo -e "- ${LIGHT_BLUE}konfigurieren${NORMAL_COLOR} : Die Kartenfunktion kann vollständig konfiguriert werden"
 }
