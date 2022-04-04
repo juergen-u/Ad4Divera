@@ -6,8 +6,15 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
-
+  <link rel="icon" type="image/png" href="img/favicon.png">
   <link rel="stylesheet" href="style.css">
+  <link href="img/apple-touch-icon.png" rel="apple-touch-icon" />
+  <link href="img/apple-touch-icon-152x152.png" rel="apple-touch-icon" sizes="152x152" />
+  <link href="img/apple-touch-icon-167x167.png" rel="apple-touch-icon" sizes="167x167" />
+  <link href="img/apple-touch-icon-180x180.png" rel="apple-touch-icon" sizes="180x180" />
+  <link href="img/icon-hires.png" rel="icon" sizes="192x192" />
+  <link href="img/icon-normal.png" rel="icon" sizes="128x128" />
+  <title>Ad4Divera Konfiguration</title>
 
 </head>
 <body>
