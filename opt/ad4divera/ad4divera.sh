@@ -88,6 +88,8 @@ while true; do
 
 		for (( j = 0 ; j < ${#FUNKTION[@]}; j++)); do functions/${FUNKTION[$j]}.sh -c $KONFIGURATIONSDATEI -f alarm; done
 
+		CURRENT_ID=`curl -s ${API_URL} | jq -r -j '.data .id'`
+
 	elif [ $HAS_ALARM = false ] && [ $IS_MONITOR_ACTIVE = true ]; then
 		sed -i '/<\/ALARM>/ s/.*/<ALARM>'$HAS_ALARM'<\/ALARM>/' "$KONFIGURATIONSDATEI"
 
