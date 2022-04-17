@@ -18,6 +18,42 @@
 
 </head>
 <body>
+<?php
+session_start();
+
+if ( isset($_POST['benutzername']) and $_POST['benutzername'] != "" and isset($_POST['kennwort']) and $_POST['kennwort'] != ""  ) {
+    if (pam_auth($_POST['benutzername'], $_POST['kennwort'], $error, false)) {
+        $_SESSION['benutzername'] = $_POST['benutzername'];
+        $_SESSION['eingeloggt'] = true;
+    } else {
+        echo "<font color=\"#fa0019\"><b>ungültige Eingabe</b></font>";
+        $_SESSION['eingeloggt'] = false;
+    }
+}
+
+if ( isset($_SESSION['eingeloggt']) and $_SESSION['eingeloggt'] == true )
+{
+    // Benutzer begruessen
+} else {
+    // Einloggformular anzeigen
+    echo '<h1>Ad4Divera</h1>';
+    echo '<h4>Das Alarmdisplay für DIVERA24/7</h4>';
+    echo '<div id="modul">';
+    echo '<hr>';
+    echo '<p>Um Änderungen an der Konfiguration vorzunehmen müssen Sie sich erst einloggen!</p>';
+    echo '<br>';
+    $url = $_SERVER['SCRIPT_NAME'];
+    echo '<form action="'. $url .'" method="POST">';
+    echo '<p>Benutzername:<br>';
+    echo '<input type="text" name="benutzername" value="">';
+    echo '<p>Kennwort:<br>';
+    echo '<input type="password" name="kennwort" value="">';
+    echo '<p><input type="Submit" value="einloggen">';
+    echo '</form>';
+    echo "</div>";
+    exit;
+}
+?>
 
 <?php
 $xml=simplexml_load_file("/etc/ad4divera/ad4divera.xml") or die("Error: Cannot create object");

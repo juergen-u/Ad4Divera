@@ -76,7 +76,7 @@ while true; do
 
 	if [ $HAS_ALARM = true ] && [ $IS_MONITOR_ACTIVE = false ]; then
 		echo -e "$(date +"%Y-%m-%d--%H-%M-%S") ${LIGHT_RED}..::EINSATZ::..${NORMAL_COLOR}" >> /var/log/ad4divera.log
-		sed -i '/<\/ALARM>/ s/.*/<ALARM>'$HAS_ALARM'<\/ALARM>/' "$KONFIGURATIONSDATEI"
+		sed -i '/<\/ALARM>/ s/.*/<ALARM>'$HAS_ALARM'<\/ALARM>/' $KONFIGURATIONSDATEI
 
 		for (( j = 0 ; j < ${#FUNKTION[@]}; j++)); do functions/${FUNKTION[$j]}.sh -c $KONFIGURATIONSDATEI -f alarm; done
 
@@ -91,7 +91,7 @@ while true; do
 		CURRENT_ID=`curl -s ${API_URL} | jq -r -j '.data .id'`
 
 	elif [ $HAS_ALARM = false ] && [ $IS_MONITOR_ACTIVE = true ]; then
-		sed -i '/<\/ALARM>/ s/.*/<ALARM>'$HAS_ALARM'<\/ALARM>/' "$KONFIGURATIONSDATEI"
+		sed -i '/<\/ALARM>/ s/.*/<ALARM>'$HAS_ALARM'<\/ALARM>/' $KONFIGURATIONSDATEI
 
 		for (( j = 0 ; j < ${#FUNKTION[@]}; j++)); do functions/${FUNKTION[$j]}.sh -c $KONFIGURATIONSDATEI -f no_alarm; done
 
