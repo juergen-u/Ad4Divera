@@ -90,7 +90,7 @@ h5, p, label {
   max-width: 1024px;
   margin: 10px auto 0 auto;
 }
-input[type=submit] {
+#button1 {
   background-color: #fa0019;
   border: none;
   border-radius: 10px;
@@ -142,11 +142,11 @@ input:checked + .slider:before {
   -ms-transform: translateX(66px);
   transform: translateX(66px);
 }
-input[type=button] {
-  background-color: #fa0019;
+#button2 {
+  background-color: #ffbf00;
   border: none;
   border-radius: 34px;
-  color: #fff;
+  color: #000;
   width: 100px;
   height: 34px;
   cursor: pointer;

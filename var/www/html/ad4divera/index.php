@@ -48,7 +48,7 @@ if ( isset($_SESSION['eingeloggt']) and $_SESSION['eingeloggt'] == true )
     echo '<input type="text" name="benutzername" value="">';
     echo '<p>Kennwort:<br>';
     echo '<input type="password" name="kennwort" value="">';
-    echo '<p><input type="Submit" value="einloggen">';
+    echo '<p><input type="Submit" id="button1" value="einloggen">';
     echo '</form>';
     echo "</div>";
     exit;
@@ -135,7 +135,6 @@ if(isset($_POST['update'])){
   shell_exec('/opt/ad4divera/functions/anzeige.sh -c /etc/ad4divera/ad4divera.xml -f no_alarm');
 }
 ?>
-
 <h1>Ad4Divera</h1>
 <h4>Das Alarmdisplay für DIVERA24/7</h4>
 <form method="post">
@@ -144,7 +143,7 @@ if(isset($_POST['update'])){
     <p>Um Änderungen an der Konfiguration zu speicher immer auf Update klicken!</p>
     <br>
     <div id="modul-button">
-    <input type="submit" name="update" value="Update">
+    <input type="submit" id="button1" name="update" value="Update">
 </div>
 </div>
 <div id="moduls">
@@ -288,40 +287,6 @@ if(isset($_POST['update'])){
             </div>
           </label>
           <br>
-      </div>
-    </li>
-    <li>
-      <div class="ov">
-        <h2>Passwort ändern</h2>
-        <hr>
-          <p>Neues Passwort:</p>
-          <input type="password" name="newPW" size="25" placeholder="neues Passwort">
-          <p>Bestätigen:</p>
-          <input type="password" name="newPW" size="25" placeholder="Bestätigen">
-	  <br>
-	  <br>
-	  <br>
-            <input type="button" name="nwPWB" value="Senden">
-          <br>
-      </div>
-    </li>
-    <li>
-      <div class="ov">
-        <h2>RPi Werte</h2>
-        <hr>
-	  <?php
-	  if($tempcpu > 70) {
-        	echo "<p>CPU Temperatur:<font color=\"#fa0019\"><b> $tempcpu</b></font> °C</p>";
-	  } else if($tempcpu > 60) {
-        	echo "<p>CPU Temperatur:<font color=\"#ffbf00\"><b> $tempcpu</b></font> °C</p>";
-	  } else {
-		echo "<p>CPU Temperatur:<b> $tempcpu</b> °C</p>";
-	  }
-	  ?>
-          <br>
-          <p>CPU Spannung:<b> <?php echo $voltcpu ?></b> V</p>
-          <br>
-          <p>CPU Frequenz:<b> <?php echo $freqcpu ?></b> GHz</p>
       </div>
     </li>
   </ul>
