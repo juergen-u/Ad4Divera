@@ -31,8 +31,7 @@ if ( isset($_POST['benutzername']) and $_POST['benutzername'] != "" and isset($_
     }
 }
 
-if ( isset($_SESSION['eingeloggt']) and $_SESSION['eingeloggt'] == true )
-{
+if ( isset($_SESSION['eingeloggt']) and $_SESSION['eingeloggt'] == true ) {
     // Benutzer begruessen
 } else {
     // Einloggformular anzeigen
@@ -40,7 +39,7 @@ if ( isset($_SESSION['eingeloggt']) and $_SESSION['eingeloggt'] == true )
     echo '<h4>Das Alarmdisplay für DIVERA24/7</h4>';
     echo '<div id="modul">';
     echo '<hr>';
-    echo '<p>Um Änderungen an der Konfiguration vorzunehmen müssen Sie sich erst einloggen!</p>';
+    echo '<p>Um Änderungen an der Konfiguration vorzunehmen müssen Sie sich mit den RPi-Zugangsdaten erst einloggen!</p>';
     echo '<br>';
     $url = $_SERVER['SCRIPT_NAME'];
     echo '<form action="'. $url .'" method="POST">';
@@ -54,7 +53,20 @@ if ( isset($_SESSION['eingeloggt']) and $_SESSION['eingeloggt'] == true )
     exit;
 }
 ?>
+<?php
+ if(isset($_POST['sendpw'])) {
+  $passwort = $_POST['newPW'];
+  $passwort2 = $_POST['newPW2'];
 
+ if($passwort != $passwort2) {
+  echo "<font color=\"#fa0019\"><b>Bitte identische Passwörter eingeben</b></font>";
+ } else {
+  pam_chpass($_SESSION['benutzername'], $_POST['kennwort'], $_POST['newPW'], $error);
+  echo $error;
+  echo "<font color=\"#fa0019\"><b>Passwort geändert</b></font>";
+ }
+}
+?>
 <?php
 $xml=simplexml_load_file("/etc/ad4divera/ad4divera.xml") or die("Error: Cannot create object");
 $heute = date("Y-m-d--H-i-s");
@@ -147,38 +159,46 @@ if(isset($_POST['update'])){
 </div>
 </div>
 <div id="moduls">
+  <hr class="outline">
+  <p class="outline">Verbindungs-Keys von Divera24/7</p>
   <ul>
     <li>
       <div class="ov">
         <h2>Accesskey</h2>
-	<hr>
+	<hr class="inline">
         <textarea name="accesskey2xml" rows="3" cols="28"><?php echo $xml->ACCESSKEY; ?></textarea>
-        <hr>
+        <hr class="inline">
         <p><b>Hinweis:</b> zu finden unter <em>Verwaltung > Schnittstellen</em>.</p>
       </div>
     </li>
     <li>
       <div class="ov">
-        <h2>Autologinanzeige</h2>
-        <hr>
+        <h2>Autologin-anzeige</h2>
+        <hr class="inline">
         <textarea name="autologinanzeige2xml" rows="3" cols="28"><?php echo $xml->AUTOLOGINANZEIGE; ?></textarea>
-        <hr>
+        <hr class="inline">
         <p><b>Hinweis:</b> zu finden unter <em>Verwaltung > Setup > Monitore</em>.</p>
       </div>
     </li>
     <li>
       <div class="ov">
-        <h2>Autologinausdruck</h2>
-        <hr>
+        <h2>Autologin-ausdruck</h2>
+        <hr class="inline">
 	<textarea name="autologinausdruck2xml" rows="3" cols="28"><?php echo $xml->AUTOLOGINAUSDRUCK; ?></textarea>
-        <hr>
+        <hr class="inline">
         <p><b>Hinweis:</b> wird nur benötigt wenn eine Karte gedruckt werden soll.</p>
       </div>
     </li>
+  </ul>
+</div>
+<div id="moduls">
+  <hr class="outline">
+  <p class="outline">Ausgabegerät und Verhalten</p>
+  <ul>
     <li>
       <div class="ov">
         <h2>Betriebsart</h2>
-        <hr>
+        <hr class="inline">
         <p>Soll der Monitor/TV<br>
           <font color="#fa0019"><b>Nur bei Einsatz</b></font><br>
           oder<br>
@@ -200,7 +220,7 @@ if(isset($_POST['update'])){
     <li>
       <div class="ov">
         <h2>Anzeigegerät</h2>
-        <hr>
+        <hr class="inline">
         <p>Ist der RPi an einem<br>
           <font color="#fa0019"><b>TV</b></font>
           oder
@@ -223,8 +243,37 @@ if(isset($_POST['update'])){
     </li>
     <li>
       <div class="ov">
+        <h2>Bewegungserkennung</h2>
+        <hr class="inline">
+        <p>Soll der Monitor/TV bei Bewegung an gehen?</p>
+          <br>
+          <br>
+          <label for="time2xml">Sekunden:</label>
+          <input type="text" name="time2xml" size="4" value="<?php echo $xml->TIME ?>">
+          <br>
+          <br>
+          <label class="switch">
+            <input type="checkbox" name="motion2xml" id="togBtn" <?php if($xml->MOTION == '1') echo 'checked'; ?>>
+            <div class="slider round">
+              <!--ADDED HTML -->
+              <span class="on">JA</span>
+              <span class="off">NEIN</span>
+              <!--END-->
+            </div>
+          </label>
+          <br>
+      </div>
+    </li>
+  </ul>
+</div>
+<div id="moduls">
+  <hr class="outline">
+  <p class="outline">Ausdrucke</p>
+  <ul>
+    <li>
+      <div class="ov">
         <h2>Einsatzdepesche</h2>
-        <hr>
+        <hr class="inline">
         <p>Soll das Divera Einsatzprotokoll ausgedruckt werden?</p>
           <br>
 	  <br>
@@ -247,7 +296,7 @@ if(isset($_POST['update'])){
     <li>
       <div class="ov">
         <h2>Einsatzkarte</h2>
-        <hr>
+        <hr class="inline">
         <p>Soll die Einsatzkarte (zweiter Divera-Monitor) ausgedruckt werden?</p>
           <br>
           <label for="anzahlkarte2xml">Anzahl Ausdrucke:</label>
@@ -266,27 +315,47 @@ if(isset($_POST['update'])){
           <br>
       </div>
     </li>
+  </ul>
+</div>
+<div id="moduls">
+  <hr class="outline">
+  <p class="outline">Sonstiges</p>
+  <ul>
     <li>
       <div class="ov">
-        <h2>Bewegungserkennung</h2>
-        <hr>
-        <p>Soll der Monitor/TV bei Bewegung an gehen?</p>
+        <h2>Passwort ändern</h2>
+        <hr class="inline">
+          <form method="post">
+	  <p>Altes Passwort:</p>
+          <input type="password" name="kennwort" size="25" placeholder="altes Passwort">
+          <p>Neues Passwort:</p>
+          <input type="password" name="newPW" size="25" placeholder="neues Passwort">
+          <p>Bestätigen:</p>
+          <input type="password" name="newPW2" size="25" placeholder="Bestätigen">
           <br>
           <br>
-          <label for="time2xml">Sekunden:</label>
-          <input type="text" name="time2xml" size="4" value="<?php echo $xml->TIME ?>">
+            <input type="submit" id="button2" name="sendpw" value="Senden">
           <br>
+          </form>
+      </div>
+    </li>
+    <li>
+      <div class="ov">
+        <h2>RPi Werte</h2>
+        <hr class="inline">
+          <?php
+          if($tempcpu > 70) {
+                echo "<p>CPU Temperatur:<font color=\"#fa0019\"><b> $tempcpu</b></font> °C</p>";
+          } else if($tempcpu > 60) {
+                echo "<p>CPU Temperatur:<font color=\"#ffbf00\"><b> $tempcpu</b></font> °C</p>";
+          } else {
+                echo "<p>CPU Temperatur:<b> $tempcpu</b> °C</p>";
+          }
+          ?>
           <br>
-          <label class="switch">
-            <input type="checkbox" name="motion2xml" id="togBtn" <?php if($xml->MOTION == '1') echo 'checked'; ?>>
-            <div class="slider round">
-              <!--ADDED HTML -->
-              <span class="on">JA</span>
-              <span class="off">NEIN</span>
-              <!--END-->
-            </div>
-          </label>
+          <p>CPU Spannung:<b> <?php echo $voltcpu ?></b> V</p>
           <br>
+          <p>CPU Frequenz:<b> <?php echo $freqcpu ?></b> GHz</p>
       </div>
     </li>
   </ul>
