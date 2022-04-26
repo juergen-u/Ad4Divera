@@ -4,7 +4,7 @@
 VERZEICHNIS=$(pwd)
 # Ändere das Verzeichnis
 cd /opt/ad4divera
-source /etc/ad4divera/colored_output.txt
+source /opt/ad4divera/functions/colored_output.txt
 
 # Funktionen werden initalisert
 FUNKTION=(`ls -1 functions | awk -F"[.]+" '/.sh/{print $1}'`)
