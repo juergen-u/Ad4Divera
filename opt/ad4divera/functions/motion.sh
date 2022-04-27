@@ -11,7 +11,7 @@ source /opt/ad4divera/functions/colored_output.txt
 
 function main(){
 if [[ "$1" = @("-?"|"-h"|"--help") ]]; then fn_help;
-elif [[ $1 = "-c" ]] && [[ -f $2 ]] && [[ $3 = "-f" ]] && [[ $4 = @(uebersicht|konfigurieren|alarm|no_alarm) ]]; then
+elif [[ $1 = "-c" ]] && [[ -f $2 ]] && [[ $3 = "-f" ]] && [[ $4 = @(uebersicht|konfigurieren|alarm|no_alarm|motion_detected) ]]; then
     #Konfigurationsdatei Einbinden
     KONFIGURATIONSDATEI=$2
     AD4CONFIG=$(fn_parameter_auslesen 'AD4CONFIG')
@@ -30,6 +30,7 @@ case $4 in
     no_alarm)       fn_motion_no_alarm ;;
     uebersicht)     fn_motion_uebersicht ;;
     konfigurieren)  fn_motion_konfigurieren ;;
+    motion_detected) fn_motion_detected ;;
 esac
 exit 0
 }
@@ -89,6 +90,33 @@ function fn_motion_alarm() {
 
 function fn_motion_no_alarm() {
 	exit 0
+	
+}
+
+function fn_motion_detected() {
+	if [ $BETRIEBSART = 0 ] && [ $OUTPUT = 1 ] && [ $MOTION = 1 ] && [ $ALARM = false ]; then
+                vcgencmd display_power 1
+		echo -e "$(date +"%Y-%m-%d--%H-%M-%S") ${LIGHT_GREEN}*FUNKTION*${NORMAL_COLOR} Monitor eingeschaltet, Bewegung." >> /var/log/ad4divera.log
+		sleep $TIME
+		ALARM=$(fn_parameter_auslesen 'ALARM')
+		if [ $ALARM = false ]; then
+			vcgencmd display_power 0
+			echo -e "$(date +"%Y-%m-%d--%H-%M-%S") ${LIGHT_GREEN}*FUNKTION*${NORMAL_COLOR} Monitor ausgeschaltet, Bewegung." >> /var/log/ad4divera.log
+		else
+			echo -e "$(date +"%Y-%m-%d--%H-%M-%S") ${YELLOW}*FUNKTION*${NORMAL_COLOR} Monitor bleibt an weil aktiver Einsatz anliegt!" >> /var/log/ad4divera.log
+		fi
+	elif [ $BETRIEBSART = 0 ] && [ $OUTPUT = 0 ] && [ $MOTION = 1 ] && [ $ALARM = false ]; then
+                echo 'on 0' | cec-client -s -d 1
+                echo -e "$(date +"%Y-%m-%d--%H-%M-%S") ${LIGHT_GREEN}*FUNKTION*${NORMAL_COLOR} TV eingeschaltet, Bewegung." >> /var/log/ad4divera.log
+		sleep $TIME
+		ALARM=$(fn_parameter_auslesen 'ALARM')
+		if [ $ALARM = false ]; then
+			echo 'standby 0' | cec-client -s -d 1
+                	echo -e "$(date +"%Y-%m-%d--%H-%M-%S") ${LIGHT_GREEN}*FUNKTION*${NORMAL_COLOR} TV ausgeschaltet, Bewegung." >> /var/log/ad4divera.log
+		else
+			echo -e "$(date +"%Y-%m-%d--%H-%M-%S") ${YELLOW}*FUNKTION*${NORMAL_COLOR} TV bleibt an weil aktiver Einsatz anliegt!" >> /var/log/ad4divera.log
+		fi
+	fi
 }
 
 function fn_motion_uebersicht() {
@@ -121,8 +149,8 @@ function fn_motion_konfigurieren() {
     ja)
       fn_motion_konfiguration_schreiben Motion 1
       fn_motion_konfiguration_schreiben Betriebsart 0
-      #sudo sed -i 's/^; on_event_start value/on_event_start \/opt\/ad4divera\/functions\/anzeige.sh -c \/etc\/ad4divera\/ad4divera.xml -f motion/' /etc/motion/motion.conf
-      #sudo systemctl restart motion.service
+      sudo sed -i 's/^; on_event_start value/on_event_start \/opt\/ad4divera\/functions\/anzeige.sh -c \/etc\/ad4divera\/ad4divera.xml -f motion/' /etc/motion/motion.conf
+      sudo systemctl reload motion.service
       echo ""
       echo -n "Die Bewegungserkennung steht jetzt auf: "
       fn_motion_konfiguration_lesen Motion
@@ -141,8 +169,8 @@ function fn_motion_konfigurieren() {
 
     nein)
       fn_motion_konfiguration_schreiben Motion 0
-      #sudo sed -i 's/^on_event_start \/opt\/ad4divera\/functions\/anzeige.sh -c \/etc\/ad4divera\/ad4divera.xml -f motion/; on_event_start value/' /etc/motion/motion.conf
-      #sudo systemctl restart motion.service
+      sudo sed -i 's/^on_event_start \/opt\/ad4divera\/functions\/anzeige.sh -c \/etc\/ad4divera\/ad4divera.xml -f motion/; on_event_start value/' /etc/motion/motion.conf
+      sudo systemctl reload motion.service
       echo "------------------------------------------------------------------------------"
       echo -n "Die Bewegungserkennung wurde geändert auf: "
       fn_motion_konfiguration_lesen Motion
