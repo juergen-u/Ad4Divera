@@ -57,12 +57,17 @@ h5, p, label {
   margin: 0 auto 0 auto;
   text-transform: none;
 }
-#moduls hr {
+#moduls hr.inline {
   width: 95%;
   height: 1.5px;
   background: #494949;
   border: 0;
   margin-bottom: 10px;
+}
+#moduls p.outline, hr.outline {
+  color: #fff;
+  max-width: 1024px;
+  margin: 10px auto 0 auto;
 }
 #moduls ul {
   padding: 0;
