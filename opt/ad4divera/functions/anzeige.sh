@@ -11,7 +11,7 @@ source /opt/ad4divera/functions/colored_output.txt
 
 function main(){
 if [[ "$1" = @("-?"|"-h"|"--help") ]]; then fn_help;
-elif [[ $1 = "-c" ]] && [[ -f $2 ]] && [[ $3 = "-f" ]] && [[ $4 = @(alarm|no_alarm|motion|uebersicht|konfigurieren) ]]; then
+elif [[ $1 = "-c" ]] && [[ -f $2 ]] && [[ $3 = "-f" ]] && [[ $4 = @(alarm|no_alarm|uebersicht|konfigurieren) ]]; then
     #Konfigurationsdatei Einbinden
     KONFIGURATIONSDATEI=$2
     AD4CONFIG=$(fn_parameter_auslesen 'AD4CONFIG')
@@ -20,7 +20,6 @@ elif [[ $1 = "-c" ]] && [[ -f $2 ]] && [[ $3 = "-f" ]] && [[ $4 = @(alarm|no_ala
     OUTPUT=$(fn_parameter_auslesen 'OUTPUT')
     ALARM=$(fn_parameter_auslesen 'ALARM')
     TIME=$(fn_parameter_auslesen 'TIME')
-    MOTION=$(fn_parameter_auslesen 'MOTION')
 else
     echo -e "${LIGHT_RED}Ungültige Eingabe${NORMAL_COLOR}"
     echo ""
@@ -30,7 +29,6 @@ fi
 case $4 in
     alarm)          fn_anzeige_alarm ;;
     no_alarm)       fn_anzeige_no_alarm ;;
-    motion)         fn_anzeige_motion ;;
     uebersicht)     fn_anzeige_uebersicht ;;
     konfigurieren)  fn_anzeige_konfigurieren ;;
 esac
@@ -43,7 +41,6 @@ function fn_help() {
     echo "Zur Verfügung stehende Funktionen:"
     echo -e "- ${LIGHT_BLUE}alarm${NORMAL_COLOR} : Der Monitor/TV wird eingeschaltet."
     echo -e "- ${LIGHT_BLUE}no_alarm${NORMAL_COLOR} : Der Monitor/TV wird ausgeschaltet."
-    echo -e "- ${LIGHT_BLUE}motion${NORMAL_COLOR} : Der Monitor/TV wird bei Bewegung ein- und ausgeschaltet."
     echo -e "- ${LIGHT_BLUE}uebersicht${NORMAL_COLOR} : Die in der Konfiguration hinterlegten Parameter werden ausgegeben"
     echo -e "- ${LIGHT_BLUE}konfigurieren${NORMAL_COLOR} : Die Kartenfunktion kann vollständig konfiguriert werden"
 }
@@ -60,46 +57,8 @@ if [[ -n $(grep -oP '(?<=<'$1'>).*?(?=</'$1'>)' $KONFIGURATIONSDATEI) ]]; then
 #    sed -n s/^$1=//p "$KONFIGURATIONSDATEI"
 }
 
-function fn_anzeige_motion() {
-	if [ $BETRIEBSART = 0 ] && [ $OUTPUT = 1 ] && [ $MOTION = 1 ] && [ $ALARM = false ]; then
-                vcgencmd display_power 1
-		echo -e "$(date +"%Y-%m-%d--%H-%M-%S") ${LIGHT_GREEN}*FUNKTION*${NORMAL_COLOR} Monitor eingeschaltet, Bewegung." >> /var/log/ad4divera.log
-		sleep $TIME
-		ALARM=$(fn_parameter_auslesen 'ALARM')
-		if [ $ALARM = false ]; then
-			vcgencmd display_power 0
-			echo -e "$(date +"%Y-%m-%d--%H-%M-%S") ${LIGHT_GREEN}*FUNKTION*${NORMAL_COLOR} Monitor ausgeschaltet, Bewegung." >> /var/log/ad4divera.log
-		else
-			echo -e "$(date +"%Y-%m-%d--%H-%M-%S") ${YELLOW}*FUNKTION*${NORMAL_COLOR} Monitor bleibt an weil aktiver Einsatz anliegt!" >> /var/log/ad4divera.log
-		fi
-	elif [ $BETRIEBSART = 0 ] && [ $OUTPUT = 0 ] && [ $MOTION = 1 ] && [ $ALARM = false ]; then
-                echo 'on 0' | cec-client -s -d 1
-                echo -e "$(date +"%Y-%m-%d--%H-%M-%S") ${LIGHT_GREEN}*FUNKTION*${NORMAL_COLOR} TV eingeschaltet, Bewegung." >> /var/log/ad4divera.log
-		sleep $TIME
-		ALARM=$(fn_parameter_auslesen 'ALARM')
-		if [ $ALARM = false ]; then
-			echo 'standby 0' | cec-client -s -d 1
-                	echo -e "$(date +"%Y-%m-%d--%H-%M-%S") ${LIGHT_GREEN}*FUNKTION*${NORMAL_COLOR} TV ausgeschaltet, Bewegung." >> /var/log/ad4divera.log
-		else
-			echo -e "$(date +"%Y-%m-%d--%H-%M-%S") ${YELLOW}*FUNKTION*${NORMAL_COLOR} TV bleibt an weil aktiver Einsatz anliegt!" >> /var/log/ad4divera.log
-		fi
-	elif [ $BETRIEBSART = 1 ] && [ $OUTPUT = 1 ] && [ $ALARM = false ]; then
-                vcgencmd display_power 1
-                echo -e "$(date +"%Y-%m-%d--%H-%M-%S") ${LIGHT_GREEN}*FUNKTION*${NORMAL_COLOR} Monitor eingeschaltet." >> /var/log/ad4divera.log
-        elif [ $BETRIEBSART = 1 ] && [ $OUTPUT = 0 ] && [ $ALARM = false ]; then
-                echo 'on 0' | cec-client -s -d 1
-                echo -e "$(date +"%Y-%m-%d--%H-%M-%S") ${LIGHT_GREEN}*FUNKTION*${NORMAL_COLOR} TV eingeschaltet." >> /var/log/ad4divera.log
-	fi
-}
-
 function fn_anzeige_no_alarm() {
-	if [ $BETRIEBSART = 1 ] && [ $OUTPUT = 1 ] && [ $ALARM = false ]; then
-                vcgencmd display_power 1
-		echo -e "$(date +"%Y-%m-%d--%H-%M-%S") ${LIGHT_GREEN}*FUNKTION*${NORMAL_COLOR} Monitor eingeschaltet." >> /var/log/ad4divera.log
-        elif [ $BETRIEBSART = 1 ] && [ $OUTPUT = 0 ] && [ $ALARM = false ]; then
-                echo 'on 0' | cec-client -s -d 1
-		echo -e "$(date +"%Y-%m-%d--%H-%M-%S") ${LIGHT_GREEN}*FUNKTION*${NORMAL_COLOR} TV eingeschaltet." >> /var/log/ad4divera.log
-	elif [ $BETRIEBSART = 0 ] && [ $OUTPUT = 1 ] && [ $ALARM = false ]; then
+	if [ $BETRIEBSART = 0 ] && [ $OUTPUT = 1 ] && [ $ALARM = false ]; then
                 vcgencmd display_power 0
 		echo -e "$(date +"%Y-%m-%d--%H-%M-%S") ${LIGHT_GREEN}*FUNKTION*${NORMAL_COLOR} Monitor ausgeschaltet." >> /var/log/ad4divera.log
         elif [ $BETRIEBSART = 0 ] && [ $OUTPUT = 0 ] && [ $ALARM = false ]; then
