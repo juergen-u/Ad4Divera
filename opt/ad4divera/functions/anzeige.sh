@@ -58,7 +58,13 @@ if [[ -n $(grep -oP '(?<=<'$1'>).*?(?=</'$1'>)' $KONFIGURATIONSDATEI) ]]; then
 }
 
 function fn_anzeige_no_alarm() {
-	if [ $BETRIEBSART = 0 ] && [ $OUTPUT = 1 ] && [ $ALARM = false ]; then
+	if [ $BETRIEBSART = 1 ] && [ $OUTPUT = 1 ] && [ $ALARM = false ]; then
+                vcgencmd display_power 1
+		echo -e "$(date +"%Y-%m-%d--%H-%M-%S") ${LIGHT_GREEN}*FUNKTION*${NORMAL_COLOR} Monitor eingeschaltet." >> /var/log/ad4divera.log
+        elif [ $BETRIEBSART = 1 ] && [ $OUTPUT = 0 ] && [ $ALARM = false ]; then
+                echo 'on 0' | cec-client -s -d 1
+		echo -e "$(date +"%Y-%m-%d--%H-%M-%S") ${LIGHT_GREEN}*FUNKTION*${NORMAL_COLOR} TV eingeschaltet." >> /var/log/ad4divera.log
+	elif [ $BETRIEBSART = 0 ] && [ $OUTPUT = 1 ] && [ $ALARM = false ]; then
                 vcgencmd display_power 0
 		echo -e "$(date +"%Y-%m-%d--%H-%M-%S") ${LIGHT_GREEN}*FUNKTION*${NORMAL_COLOR} Monitor ausgeschaltet." >> /var/log/ad4divera.log
         elif [ $BETRIEBSART = 0 ] && [ $OUTPUT = 0 ] && [ $ALARM = false ]; then
@@ -83,6 +89,7 @@ function fn_anzeige_konfiguration_lesen() {
 	    case $(fn_parameter_auslesen BETRIEBSART) in
         0)  echo -e "${LIGHT_RED}Nur bei Einsatz${NORMAL_COLOR}";;
         1)  echo -e "${LIGHT_GREEN}Immer an${NORMAL_COLOR}";;
+	2)  echo -e "${LIGHT_GREY}Inaktiv${NORMAL_COLOR}";;
         *)  echo -e "${LIGHT_RED}Ungültiger Wert!${NORMAL_COLOR}"; fn_anzeige_konfiguration_schreiben Betriebsart 1; echo "Der Wert wurde auf 'immer an' gesetzt";;
       esac
       ;;
@@ -130,7 +137,7 @@ function fn_anzeige_konfigurieren() {
 	fn_anzeige_konfiguration_lesen Betriebsart
 	echo " "
 	echo "Soll der Monitor/Fernseher immer an sein oder nur wenn ein Einsatz ist?"
-	echo "(immer|einsatz)"
+	echo "(immer|einsatz|inaktiv)"
 	echo " "
 	echo -n "Bitte wählen: "
 	read BETRIEBSART
@@ -154,6 +161,16 @@ function fn_anzeige_konfigurieren() {
 	  $AD4FUNCTION/anzeige.sh -c $AD4CONFIG -f no_alarm
 	  break
 	;;
+	
+	  inaktiv)
+	  fn_anzeige_konfiguration_schreiben Betriebsart 2
+	  echo "------------------------------------------------------------------------------"
+	  echo -n "Die Betriebsart steht jetzt auf: "
+	  fn_anzeige_konfiguration_lesen Betriebsart
+	  sleep 1
+	  $AD4FUNCTION/anzeige.sh -c $AD4CONFIG -f no_alarm
+	  break
+	;;	
 
 	  *)
 	  clear
