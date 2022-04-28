@@ -19,6 +19,8 @@ elif [[ $1 = "-c" ]] && [[ -f $2 ]] && [[ $3 = "-f" ]] && [[ $4 = @(uebersicht|k
     BETRIEBSART=$(fn_parameter_auslesen 'BETRIEBSART')
     MOTION=$(fn_parameter_auslesen 'MOTION')
     TIME=$(fn_parameter_auslesen 'TIME')
+    ALARM=$(fn_parameter_auslesen 'ALARM')
+    OUTPUT=$(fn_parameter_auslesen 'OUTPUT')
 else
     echo -e "${LIGHT_RED}Ungültige Eingabe${NORMAL_COLOR}"
     echo ""
@@ -149,8 +151,7 @@ function fn_motion_konfigurieren() {
     ja)
       fn_motion_konfiguration_schreiben Motion 1
       fn_motion_konfiguration_schreiben Betriebsart 0
-      sudo sed -i 's/^; on_event_start value/on_event_start \/opt\/ad4divera\/functions\/anzeige.sh -c \/etc\/ad4divera\/ad4divera.xml -f motion/' /etc/motion/motion.conf
-      sudo systemctl reload motion.service
+      sudo systemctl restart motion.service
       echo ""
       echo -n "Die Bewegungserkennung steht jetzt auf: "
       fn_motion_konfiguration_lesen Motion
@@ -169,8 +170,7 @@ function fn_motion_konfigurieren() {
 
     nein)
       fn_motion_konfiguration_schreiben Motion 0
-      sudo sed -i 's/^on_event_start \/opt\/ad4divera\/functions\/anzeige.sh -c \/etc\/ad4divera\/ad4divera.xml -f motion/; on_event_start value/' /etc/motion/motion.conf
-      sudo systemctl reload motion.service
+      sudo systemctl restart motion.service
       echo "------------------------------------------------------------------------------"
       echo -n "Die Bewegungserkennung wurde geändert auf: "
       fn_motion_konfiguration_lesen Motion
