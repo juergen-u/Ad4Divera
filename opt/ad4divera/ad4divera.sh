@@ -69,6 +69,7 @@ IS_MONITOR_ACTIVE=true
 # PROGRAMM STARTEN
 $AD4FUNCTION/anzeige.sh -c $AD4CONFIG -f no_alarm &
 firefox-esr --display=:0 --private-window --kiosk https://app.divera247.com/monitor/1.html?autologin=${AUTOLOGINANZEIGE} &
+motion -b -c $AD4FUNCTION/motion.conf -l $AD4LOG &
 echo -e "$(date +"%Y-%m-%d--%H-%M-%S") ${PURPLE}*AD4DIVERA WIRD GESTARTET*${NORMAL_COLOR}" >> $AD4LOG
 
 while true; do
