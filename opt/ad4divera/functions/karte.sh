@@ -16,6 +16,7 @@ elif [[ $1 = "-c" ]] && [[ -f $2 ]] && [[ $3 = "-f" ]] && [[ $4 = @(alarm|no_ala
     #Konfigurationsdatei Einbinden
     KONFIGURATIONSDATEI=$2
     AD4CONFIG=$(fn_parameter_auslesen 'AD4CONFIG')
+    AD4LOG=$(fn_parameter_auslesen 'AD4LOG')
     AD4FUNCTION=$(fn_parameter_auslesen 'AD4FUNCTION')
     AD4ARCHIV=$(fn_parameter_auslesen 'AD4ARCHIV')
     KARTE=$(fn_parameter_auslesen 'KARTE')
