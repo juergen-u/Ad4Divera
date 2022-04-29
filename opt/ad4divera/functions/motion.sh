@@ -152,7 +152,6 @@ function fn_motion_konfigurieren() {
     ja)
       fn_motion_konfiguration_schreiben Motion 1
       fn_motion_konfiguration_schreiben Betriebsart 0
-      sudo systemctl restart motion.service
       echo ""
       echo -n "Die Bewegungserkennung steht jetzt auf: "
       fn_motion_konfiguration_lesen Motion
@@ -171,7 +170,6 @@ function fn_motion_konfigurieren() {
 
     nein)
       fn_motion_konfiguration_schreiben Motion 0
-      sudo systemctl restart motion.service
       echo "------------------------------------------------------------------------------"
       echo -n "Die Bewegungserkennung wurde geändert auf: "
       fn_motion_konfiguration_lesen Motion
