@@ -15,6 +15,7 @@ elif [[ $1 = "-c" ]] && [[ -f $2 ]] && [[ $3 = "-f" ]] && [[ $4 = @(uebersicht|k
     #Konfigurationsdatei Einbinden
     KONFIGURATIONSDATEI=$2
     AD4CONFIG=$(fn_parameter_auslesen 'AD4CONFIG')
+    AD4LOG=$(fn_parameter_auslesen 'AD4LOG')
     AD4FUNCTION=$(fn_parameter_auslesen 'AD4FUNCTION')
     BETRIEBSART=$(fn_parameter_auslesen 'BETRIEBSART')
     MOTION=$(fn_parameter_auslesen 'MOTION')
@@ -80,9 +81,9 @@ function fn_motion_konfiguration_lesen() {
 
 function fn_motion_konfiguration_schreiben() {
   case $1 in
-    Motion)    sed -i '/<\/MOTION>/ s/.*/<MOTION>'$2'<\/MOTION>/' "$KONFIGURATIONSDATEI"; echo -e "$(date +"%Y-%m-%d--%H-%M-%S") ${LIGHT_CYAN}*EINSTELLUNG GEÄNDERT*${NORMAL_COLOR} Bewegungserkennung: Wurde auf $(fn_motion_konfiguration_lesen Motion) eingestellt." >> /var/log/ad4divera.log;;
-    Zeit)    sed -i '/<\/TIME>/ s/.*/<TIME>'$2'<\/TIME>/' "$KONFIGURATIONSDATEI"; echo -e "$(date +"%Y-%m-%d--%H-%M-%S") ${LIGHT_CYAN}*EINSTELLUNG GEÄNDERT*${NORMAL_COLOR} Bewegungserkennung: Die Zeit wurde auf $(fn_motion_konfiguration_lesen Zeit) Sekunden eingestellt." >> /var/log/ad4divera.log;;
-    Betriebsart)    sed -i '/<\/BETRIEBSART>/ s/.*/<BETRIEBSART>'$2'<\/BETRIEBSART>/' "$KONFIGURATIONSDATEI"; echo -e "$(date +"%Y-%m-%d--%H-%M-%S") ${LIGHT_CYAN}*EINSTELLUNG GEÄNDERT*${NORMAL_COLOR} Betriebsart wurde auf $(fn_motion_konfiguration_lesen Betriebsart) geändert" >> /var/log/ad4divera.log;;
+    Motion)    sed -i '/<\/MOTION>/ s/.*/<MOTION>'$2'<\/MOTION>/' "$KONFIGURATIONSDATEI"; echo -e "$(date +"%Y-%m-%d--%H-%M-%S") ${LIGHT_CYAN}*EINSTELLUNG GEÄNDERT*${NORMAL_COLOR} Bewegungserkennung: Wurde auf $(fn_motion_konfiguration_lesen Motion) eingestellt." >> $AD4LOG;;
+    Zeit)    sed -i '/<\/TIME>/ s/.*/<TIME>'$2'<\/TIME>/' "$KONFIGURATIONSDATEI"; echo -e "$(date +"%Y-%m-%d--%H-%M-%S") ${LIGHT_CYAN}*EINSTELLUNG GEÄNDERT*${NORMAL_COLOR} Bewegungserkennung: Die Zeit wurde auf $(fn_motion_konfiguration_lesen Zeit) Sekunden eingestellt." >> $AD4LOG;;
+    Betriebsart)    sed -i '/<\/BETRIEBSART>/ s/.*/<BETRIEBSART>'$2'<\/BETRIEBSART>/' "$KONFIGURATIONSDATEI"; echo -e "$(date +"%Y-%m-%d--%H-%M-%S") ${LIGHT_CYAN}*EINSTELLUNG GEÄNDERT*${NORMAL_COLOR} Betriebsart wurde auf $(fn_motion_konfiguration_lesen Betriebsart) geändert" >> $AD4LOG;;
   esac
 }
 
@@ -98,25 +99,25 @@ function fn_motion_no_alarm() {
 function fn_motion_detected() {
 	if [ $BETRIEBSART = 0 ] && [ $OUTPUT = 1 ] && [ $MOTION = 1 ] && [ $ALARM = false ]; then
                 vcgencmd display_power 1
-		echo -e "$(date +"%Y-%m-%d--%H-%M-%S") ${LIGHT_GREEN}*FUNKTION*${NORMAL_COLOR} Monitor eingeschaltet, Bewegung." >> /var/log/ad4divera.log
+		echo -e "$(date +"%Y-%m-%d--%H-%M-%S") ${LIGHT_GREEN}*FUNKTION*${NORMAL_COLOR} Monitor eingeschaltet, Bewegung." >> $AD4LOG
 		sleep $TIME
 		ALARM=$(fn_parameter_auslesen 'ALARM')
 		if [ $ALARM = false ]; then
 			vcgencmd display_power 0
-			echo -e "$(date +"%Y-%m-%d--%H-%M-%S") ${LIGHT_GREEN}*FUNKTION*${NORMAL_COLOR} Monitor ausgeschaltet, Bewegung." >> /var/log/ad4divera.log
+			echo -e "$(date +"%Y-%m-%d--%H-%M-%S") ${LIGHT_GREEN}*FUNKTION*${NORMAL_COLOR} Monitor ausgeschaltet, Bewegung." >> $AD4LOG
 		else
-			echo -e "$(date +"%Y-%m-%d--%H-%M-%S") ${YELLOW}*FUNKTION*${NORMAL_COLOR} Monitor bleibt an weil aktiver Einsatz anliegt!" >> /var/log/ad4divera.log
+			echo -e "$(date +"%Y-%m-%d--%H-%M-%S") ${YELLOW}*FUNKTION*${NORMAL_COLOR} Monitor bleibt an weil aktiver Einsatz anliegt!" >> $AD4LOG
 		fi
 	elif [ $BETRIEBSART = 0 ] && [ $OUTPUT = 0 ] && [ $MOTION = 1 ] && [ $ALARM = false ]; then
                 echo 'on 0' | cec-client -s -d 1
-                echo -e "$(date +"%Y-%m-%d--%H-%M-%S") ${LIGHT_GREEN}*FUNKTION*${NORMAL_COLOR} TV eingeschaltet, Bewegung." >> /var/log/ad4divera.log
+                echo -e "$(date +"%Y-%m-%d--%H-%M-%S") ${LIGHT_GREEN}*FUNKTION*${NORMAL_COLOR} TV eingeschaltet, Bewegung." >> $AD4LOG
 		sleep $TIME
 		ALARM=$(fn_parameter_auslesen 'ALARM')
 		if [ $ALARM = false ]; then
 			echo 'standby 0' | cec-client -s -d 1
-                	echo -e "$(date +"%Y-%m-%d--%H-%M-%S") ${LIGHT_GREEN}*FUNKTION*${NORMAL_COLOR} TV ausgeschaltet, Bewegung." >> /var/log/ad4divera.log
+                	echo -e "$(date +"%Y-%m-%d--%H-%M-%S") ${LIGHT_GREEN}*FUNKTION*${NORMAL_COLOR} TV ausgeschaltet, Bewegung." >> $AD4LOG
 		else
-			echo -e "$(date +"%Y-%m-%d--%H-%M-%S") ${YELLOW}*FUNKTION*${NORMAL_COLOR} TV bleibt an weil aktiver Einsatz anliegt!" >> /var/log/ad4divera.log
+			echo -e "$(date +"%Y-%m-%d--%H-%M-%S") ${YELLOW}*FUNKTION*${NORMAL_COLOR} TV bleibt an weil aktiver Einsatz anliegt!" >> $AD4LOG
 		fi
 	fi
 }
