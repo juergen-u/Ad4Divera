@@ -15,6 +15,7 @@ elif [[ $1 = "-c" ]] && [[ -f $2 ]] && [[ $3 = "-f" ]] && [[ $4 = @(alarm|no_ala
     #Konfigurationsdatei Einbinden
     KONFIGURATIONSDATEI=$2
     AD4CONFIG=$(fn_parameter_auslesen 'AD4CONFIG')
+    AD4LOG=$(fn_parameter_auslesen 'AD4LOG')
     AD4FUNCTION=$(fn_parameter_auslesen 'AD4FUNCTION')
     BETRIEBSART=$(fn_parameter_auslesen 'BETRIEBSART')
     OUTPUT=$(fn_parameter_auslesen 'OUTPUT')
@@ -60,26 +61,26 @@ if [[ -n $(grep -oP '(?<=<'$1'>).*?(?=</'$1'>)' $KONFIGURATIONSDATEI) ]]; then
 function fn_anzeige_no_alarm() {
 	if [ $BETRIEBSART = 1 ] && [ $OUTPUT = 1 ] && [ $ALARM = false ]; then
                 vcgencmd display_power 1
-		echo -e "$(date +"%Y-%m-%d--%H-%M-%S") ${LIGHT_GREEN}*FUNKTION*${NORMAL_COLOR} Monitor eingeschaltet." >> /var/log/ad4divera.log
+		echo -e "$(date +"%Y-%m-%d--%H-%M-%S") ${LIGHT_GREEN}*FUNKTION*${NORMAL_COLOR} Monitor eingeschaltet." >> $AD4LOG
         elif [ $BETRIEBSART = 1 ] && [ $OUTPUT = 0 ] && [ $ALARM = false ]; then
                 echo 'on 0' | cec-client -s -d 1
-		echo -e "$(date +"%Y-%m-%d--%H-%M-%S") ${LIGHT_GREEN}*FUNKTION*${NORMAL_COLOR} TV eingeschaltet." >> /var/log/ad4divera.log
+		echo -e "$(date +"%Y-%m-%d--%H-%M-%S") ${LIGHT_GREEN}*FUNKTION*${NORMAL_COLOR} TV eingeschaltet." >> $AD4LOG
 	elif [ $BETRIEBSART = 0 ] && [ $OUTPUT = 1 ] && [ $ALARM = false ]; then
                 vcgencmd display_power 0
-		echo -e "$(date +"%Y-%m-%d--%H-%M-%S") ${LIGHT_GREEN}*FUNKTION*${NORMAL_COLOR} Monitor ausgeschaltet." >> /var/log/ad4divera.log
+		echo -e "$(date +"%Y-%m-%d--%H-%M-%S") ${LIGHT_GREEN}*FUNKTION*${NORMAL_COLOR} Monitor ausgeschaltet." >> $AD4LOG
         elif [ $BETRIEBSART = 0 ] && [ $OUTPUT = 0 ] && [ $ALARM = false ]; then
                 echo 'standby 0' | cec-client -s -d 1
-		echo -e "$(date +"%Y-%m-%d--%H-%M-%S") ${LIGHT_GREEN}*FUNKTION*${NORMAL_COLOR} TV ausgeschaltet." >> /var/log/ad4divera.log
+		echo -e "$(date +"%Y-%m-%d--%H-%M-%S") ${LIGHT_GREEN}*FUNKTION*${NORMAL_COLOR} TV ausgeschaltet." >> $AD4LOG
         fi
 }
 
 function fn_anzeige_alarm() {
 	if [ $BETRIEBSART = 0 ] && [ $OUTPUT = 1 ]; then
         	vcgencmd display_power 1
-		echo -e "$(date +"%Y-%m-%d--%H-%M-%S") ${LIGHT_GREEN}*FUNKTION*${NORMAL_COLOR} Monitor eingeschaltet, Einsatz." >> /var/log/ad4divera.log
+		echo -e "$(date +"%Y-%m-%d--%H-%M-%S") ${LIGHT_GREEN}*FUNKTION*${NORMAL_COLOR} Monitor eingeschaltet, Einsatz." >> $AD4LOG
 	elif [ $BETRIEBSART = 0 ] && [ $OUTPUT = 0 ]; then
 		echo 'on 0' | cec-client -s -d 1
-		echo -e "$(date +"%Y-%m-%d--%H-%M-%S") ${LIGHT_GREEN}*FUNKTION*${NORMAL_COLOR} TV eingeschaltet, Einsatz." >> /var/log/ad4divera.log
+		echo -e "$(date +"%Y-%m-%d--%H-%M-%S") ${LIGHT_GREEN}*FUNKTION*${NORMAL_COLOR} TV eingeschaltet, Einsatz." >> $AD4LOG
 	fi
 }
 
@@ -105,8 +106,8 @@ function fn_anzeige_konfiguration_lesen() {
 
 function fn_anzeige_konfiguration_schreiben() {
   case $1 in
-    Betriebsart)    sed -i '/<\/BETRIEBSART>/ s/.*/<BETRIEBSART>'$2'<\/BETRIEBSART>/' "$KONFIGURATIONSDATEI"; echo -e "$(date +"%Y-%m-%d--%H-%M-%S") ${LIGHT_CYAN}*EINSTELLUNG GEÄNDERT*${NORMAL_COLOR} Betriebsart wurde auf $(fn_anzeige_konfiguration_lesen Betriebsart) geändert" >> /var/log/ad4divera.log;;
-    Anzeigegeraet)    sed -i '/<\/OUTPUT>/ s/.*/<OUTPUT>'$2'<\/OUTPUT>/' "$KONFIGURATIONSDATEI"; echo -e "$(date +"%Y-%m-%d--%H-%M-%S") ${LIGHT_CYAN}*EINSTELLUNG GEÄNDERT*${NORMAL_COLOR} Anzeigegerät wurde auf $(fn_anzeige_konfiguration_lesen Anzeigegeraet) geändert" >> /var/log/ad4divera.log;;
+    Betriebsart)    sed -i '/<\/BETRIEBSART>/ s/.*/<BETRIEBSART>'$2'<\/BETRIEBSART>/' "$KONFIGURATIONSDATEI"; echo -e "$(date +"%Y-%m-%d--%H-%M-%S") ${LIGHT_CYAN}*EINSTELLUNG GEÄNDERT*${NORMAL_COLOR} Betriebsart wurde auf $(fn_anzeige_konfiguration_lesen Betriebsart) geändert" >> $AD4LOG;;
+    Anzeigegeraet)    sed -i '/<\/OUTPUT>/ s/.*/<OUTPUT>'$2'<\/OUTPUT>/' "$KONFIGURATIONSDATEI"; echo -e "$(date +"%Y-%m-%d--%H-%M-%S") ${LIGHT_CYAN}*EINSTELLUNG GEÄNDERT*${NORMAL_COLOR} Anzeigegerät wurde auf $(fn_anzeige_konfiguration_lesen Anzeigegeraet) geändert" >> $AD4LOG;;
   esac
 }
 
