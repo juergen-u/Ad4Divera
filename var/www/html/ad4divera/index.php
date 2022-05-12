@@ -321,7 +321,7 @@ if(isset($_POST['update'])){
   <hr class="outline">
   <p class="outline">Sonstiges</p>
   <ul>
-    <li>
+<!--    <li>
       <div class="ov">
         <h2>Passwort ändern</h2>
         <hr class="inline">
@@ -338,7 +338,7 @@ if(isset($_POST['update'])){
           <br>
           </form>
       </div>
-    </li>
+    </li> -->
     <li>
       <div class="ov">
         <h2>RPi Werte</h2>
