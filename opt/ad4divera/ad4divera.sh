@@ -24,6 +24,7 @@ elif [[ $1 = "-c" ]] && [[ -f $2 ]] && [[ $3 = "-f" ]] && [[ $4 = @(start) ]]; t
     #Konfigurationsdatei Einbinden
     KONFIGURATIONSDATEI=$2
     AD4CONFIG=$(fn_parameter_auslesen 'AD4CONFIG')
+    AD4LOG=$(fn_parameter_auslesen 'AD4LOG')
     AD4FUNCTION=$(fn_parameter_auslesen 'AD4FUNCTION')
     ACCESSKEY=$(fn_parameter_auslesen 'ACCESSKEY')
     AUTOLOGINANZEIGE=$(fn_parameter_auslesen 'AUTOLOGINANZEIGE')
@@ -68,14 +69,15 @@ IS_MONITOR_ACTIVE=true
 # PROGRAMM STARTEN
 $AD4FUNCTION/anzeige.sh -c $AD4CONFIG -f no_alarm &
 firefox-esr --display=:0 --private-window --kiosk https://app.divera247.com/monitor/1.html?autologin=${AUTOLOGINANZEIGE} &
-echo -e "$(date +"%Y-%m-%d--%H-%M-%S") ${PURPLE}*AD4DIVERA WIRD GESTARTET*${NORMAL_COLOR}" >> /var/log/ad4divera.log
+motion -b -c $AD4FUNCTION/motion.conf -l $AD4LOG &
+echo -e "$(date +"%Y-%m-%d--%H-%M-%S") ${PURPLE}*AD4DIVERA WIRD GESTARTET*${NORMAL_COLOR}" >> $AD4LOG
 
 while true; do
 	HAS_ALARM=`curl -s ${API_URL} | jq -r -j '.success'`
 	HAS_ID_NOW=`curl -s ${API_URL} | jq -r -j '.data .id'`
 
 	if [ $HAS_ALARM = true ] && [ $IS_MONITOR_ACTIVE = false ]; then
-		echo -e "$(date +"%Y-%m-%d--%H-%M-%S") ${LIGHT_RED}..::EINSATZ::..${NORMAL_COLOR}" >> /var/log/ad4divera.log
+		echo -e "$(date +"%Y-%m-%d--%H-%M-%S") ${LIGHT_RED}..::EINSATZ::..${NORMAL_COLOR}" >> $AD4LOG
 		sed -i '/<\/ALARM>/ s/.*/<ALARM>'$HAS_ALARM'<\/ALARM>/' $KONFIGURATIONSDATEI
 
 		for (( j = 0 ; j < ${#FUNKTION[@]}; j++)); do functions/${FUNKTION[$j]}.sh -c $KONFIGURATIONSDATEI -f alarm; done
@@ -84,7 +86,7 @@ while true; do
       		IS_MONITOR_ACTIVE=true
 
     	elif [ $HAS_ALARM = true ] && [ $HAS_ID_NOW != $CURRENT_ID ];then
-		echo -e "$(date +"%Y-%m-%d--%H-%M-%S") ${LIGHT_RED}..::NEUER EINSATZ::..${NORMAL_COLOR}" >> /var/log/ad4divera.log
+		echo -e "$(date +"%Y-%m-%d--%H-%M-%S") ${LIGHT_RED}..::NEUER EINSATZ::..${NORMAL_COLOR}" >> $AD4LOG
 
 		for (( j = 0 ; j < ${#FUNKTION[@]}; j++)); do functions/${FUNKTION[$j]}.sh -c $KONFIGURATIONSDATEI -f alarm; done
 

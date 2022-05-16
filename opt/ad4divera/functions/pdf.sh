@@ -15,6 +15,7 @@ elif [[ $1 = "-c" ]] && [[ -f $2 ]] && [[ $3 = "-f" ]] && [[ $4 = @(alarm|no_ala
     #Konfigurationsdatei Einbinden
     KONFIGURATIONSDATEI=$2
     AD4CONFIG=$(fn_parameter_auslesen 'AD4CONFIG')
+    AD4LOG=$(fn_parameter_auslesen 'AD4LOG')
     AD4FUNCTION=$(fn_parameter_auslesen 'AD4FUNCTION')
     AD4ARCHIV=$(fn_parameter_auslesen 'AD4ARCHIV')
     DOWNLOAD=$(fn_parameter_auslesen 'DOWNLOAD')
@@ -65,9 +66,9 @@ function fn_pdf_alarm() {
         	wget $DOWNLOAD_URL -O $AD4ARCHIV/$PDFNAME.pdf
 		lp -o media=A4 -n $ANZAHLPDF -o fit-to-page $AD4ARCHIV/$PDFNAME.pdf
     		if [ $? -ne 0 ]; then
-      			echo -e "$(date +"%Y-%m-%d--%H-%M-%S") ${LIGHT_RED}*FEHLER*${NORMAL_COLOR} Ausdruck Einsatzdepesche: Es konnte kein Ausdruck erstellt werden" >> /var/log/ad4divera.log
+      			echo -e "$(date +"%Y-%m-%d--%H-%M-%S") ${LIGHT_RED}*FEHLER*${NORMAL_COLOR} Ausdruck Einsatzdepesche: Es konnte kein Ausdruck erstellt werden" >> $AD4LOG
     		else
-      			echo -e "$(date +"%Y-%m-%d--%H-%M-%S") ${LIGHT_GREEN}*FUNKTION*${NORMAL_COLOR} Ausdruck Einsatzdepesche: Es wurden $ANZAHLKARTE Ausdruck(e) erstellt" >> /var/log/ad4divera.log
+      			echo -e "$(date +"%Y-%m-%d--%H-%M-%S") ${LIGHT_GREEN}*FUNKTION*${NORMAL_COLOR} Ausdruck Einsatzdepesche: Es wurden $ANZAHLPDF Ausdruck(e) erstellt" >> $AD4LOG
     		fi
 	fi
 }
@@ -87,8 +88,8 @@ function fn_pdf_konfiguration_lesen() {
 
 function fn_pdf_konfiguration_schreiben() {
   case $1 in
-    PDF-Ausdruck)    sed -i '/<\/DOWNLOAD>/ s/.*/<DOWNLOAD>'$2'<\/DOWNLOAD>/' "$KONFIGURATIONSDATEI"; echo -e "$(date +"%Y-%m-%d--%H-%M-%S") ${LIGHT_CYAN}*EINSTELLUNG GEÄNDERT*${NORMAL_COLOR} Ausdruck Einsatzdepesche: Wurde auf $(fn_pdf_konfiguration_lesen PDF-Ausdruck) eingestellt." >> /var/log/ad4divera.log;;
-    Anzahl-Ausdruck)    sed -i '/<\/ANZAHLPDF>/ s/.*/<ANZAHLPDF>'$2'<\/ANZAHLPDF>/' "$KONFIGURATIONSDATEI"; echo -e "$(date +"%Y-%m-%d--%H-%M-%S") ${LIGHT_CYAN}*EINSTELLUNG GEÄNDERT*${NORMAL_COLOR} Ausdruck Einsatzdepesche: Es werden $(fn_pdf_konfiguration_lesen Anzahl-Ausdruck) Ausdrucke erstellt." >> /var/log/ad4divera.log;;
+    PDF-Ausdruck)    sed -i '/<\/DOWNLOAD>/ s/.*/<DOWNLOAD>'$2'<\/DOWNLOAD>/' "$KONFIGURATIONSDATEI"; echo -e "$(date +"%Y-%m-%d--%H-%M-%S") ${LIGHT_CYAN}*EINSTELLUNG GEÄNDERT*${NORMAL_COLOR} Ausdruck Einsatzdepesche: Wurde auf $(fn_pdf_konfiguration_lesen PDF-Ausdruck) eingestellt." >> $AD4LOG;;
+    Anzahl-Ausdruck)    sed -i '/<\/ANZAHLPDF>/ s/.*/<ANZAHLPDF>'$2'<\/ANZAHLPDF>/' "$KONFIGURATIONSDATEI"; echo -e "$(date +"%Y-%m-%d--%H-%M-%S") ${LIGHT_CYAN}*EINSTELLUNG GEÄNDERT*${NORMAL_COLOR} Ausdruck Einsatzdepesche: Es werden $(fn_pdf_konfiguration_lesen Anzahl-Ausdruck) Ausdrucke erstellt." >> $AD4LOG;;
   esac
 }
 

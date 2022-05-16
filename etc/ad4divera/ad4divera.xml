@@ -1,6 +1,7 @@
 <?xml version="1.0"?>
 <ad4config>
 <AD4CONFIG>/etc/ad4divera/ad4divera.xml</AD4CONFIG>
+<AD4LOG>/var/log/ad4divera.log</AD4LOG>
 <AD4FUNCTION>/opt/ad4divera/functions</AD4FUNCTION>
 <AD4ARCHIV>/opt/ad4divera/archiv</AD4ARCHIV>
 <ACCESSKEY>unbekannt</ACCESSKEY>

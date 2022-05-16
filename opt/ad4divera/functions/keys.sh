@@ -15,6 +15,7 @@ elif [[ $1 = "-c" ]] && [[ -f $2 ]] && [[ $3 = "-f" ]] && [[ $4 = @(uebersicht|k
     #Konfigurationsdatei Einbinden
     KONFIGURATIONSDATEI=$2
     AD4CONFIG=$(fn_parameter_auslesen 'AD4CONFIG')
+    AD4LOG=$(fn_parameter_auslesen 'AD4LOG')
     AD4FUNCTION=$(fn_parameter_auslesen 'AD4FUNCTION')
     ACCESSKEY=$(fn_parameter_auslesen 'ACCESSKEY')
     AUTOLOGINANZEIGE=$(fn_parameter_auslesen 'AUTOLOGINANZEIGE')
@@ -66,9 +67,9 @@ function fn_keys_konfiguration_lesen() {
 
 function fn_keys_konfiguration_schreiben() {
   case $1 in
-    Accesskey) sed -i '/<\/ACCESSKEY>/ s/.*/<ACCESSKEY>'$ACCESSKEY'<\/ACCESSKEY>/' "$KONFIGURATIONSDATEI"; echo -e "$(date +"%Y-%m-%d--%H-%M-%S") ${LIGHT_CYAN}*EINSTELLUNG GEÄNDERT*${NORMAL_COLOR} Acesskey geändert." >> /var/log/ad4divera.log;;
-    Autologinanzeige) sed -i '/<\/AUTOLOGINANZEIGE>/ s/.*/<AUTOLOGINANZEIGE>'$AUTOLOGINANZEIGE'<\/AUTOLOGINANZEIGE>/' "$KONFIGURATIONSDATEI"; echo -e "$(date +"%Y-%m-%d--%H-%M-%S") ${LIGHT_CYAN}*EINSTELLUNG GEÄNDERT*${NORMAL_COLOR} Autologin-Key Anzeige geändert." >> /var/log/ad4divera.log;;
-    Autologinausdruck) sed -i '/<\/AUTOLOGINAUSDRUCK>/ s/.*/<AUTOLOGINAUSDRUCK>'$AUTOLOGINAUSDRUCK'<\/AUTOLOGINAUSDRUCK>/' "$KONFIGURATIONSDATEI"; echo -e "$(date +"%Y-%m-%d--%H-%M-%S") ${LIGHT_CYAN}*EINSTELLUNG GEÄNDERT*${NORMAL_COLOR} Autologin-Key Ausdruck geändert" >> /var/log/ad4divera.log;;
+    Accesskey) sed -i '/<\/ACCESSKEY>/ s/.*/<ACCESSKEY>'$ACCESSKEY'<\/ACCESSKEY>/' "$KONFIGURATIONSDATEI"; echo -e "$(date +"%Y-%m-%d--%H-%M-%S") ${LIGHT_CYAN}*EINSTELLUNG GEÄNDERT*${NORMAL_COLOR} Acesskey geändert." >> $AD4LOG;;
+    Autologinanzeige) sed -i '/<\/AUTOLOGINANZEIGE>/ s/.*/<AUTOLOGINANZEIGE>'$AUTOLOGINANZEIGE'<\/AUTOLOGINANZEIGE>/' "$KONFIGURATIONSDATEI"; echo -e "$(date +"%Y-%m-%d--%H-%M-%S") ${LIGHT_CYAN}*EINSTELLUNG GEÄNDERT*${NORMAL_COLOR} Autologin-Key Anzeige geändert." >> $AD4LOG;;
+    Autologinausdruck) sed -i '/<\/AUTOLOGINAUSDRUCK>/ s/.*/<AUTOLOGINAUSDRUCK>'$AUTOLOGINAUSDRUCK'<\/AUTOLOGINAUSDRUCK>/' "$KONFIGURATIONSDATEI"; echo -e "$(date +"%Y-%m-%d--%H-%M-%S") ${LIGHT_CYAN}*EINSTELLUNG GEÄNDERT*${NORMAL_COLOR} Autologin-Key Ausdruck geändert" >> $AD4LOG;;
   esac
 }
 

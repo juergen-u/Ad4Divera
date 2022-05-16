@@ -16,6 +16,7 @@ elif [[ $1 = "-c" ]] && [[ -f $2 ]] && [[ $3 = "-f" ]] && [[ $4 = @(alarm|no_ala
     #Konfigurationsdatei Einbinden
     KONFIGURATIONSDATEI=$2
     AD4CONFIG=$(fn_parameter_auslesen 'AD4CONFIG')
+    AD4LOG=$(fn_parameter_auslesen 'AD4LOG')
     AD4FUNCTION=$(fn_parameter_auslesen 'AD4FUNCTION')
     AD4ARCHIV=$(fn_parameter_auslesen 'AD4ARCHIV')
     KARTE=$(fn_parameter_auslesen 'KARTE')
@@ -66,7 +67,7 @@ function fn_karte_alarm() {
     		if [ $? -ne 0 ]; then
       			echo -e "$(date +"%Y-%m-%d--%H-%M-%S") ${LIGHT_RED}*FEHLER*${NORMAL_COLOR} Ausdruck Einsatzkarte: Es konnte kein Ausdruck erstellt werden" >> /var/log/ad4divera.log
     		else
-      			echo -e "$(date +"%Y-%m-%d--%H-%M-%S") ${LIGHT_GREEN}*FUNKTION*${NORMAL_COLOR} Ausdruck Einsatzdepesche: Es wurden $ANZAHLKARTE Ausdruck(e) erstellt" >> /var/log/ad4divera.log
+      			echo -e "$(date +"%Y-%m-%d--%H-%M-%S") ${LIGHT_GREEN}*FUNKTION*${NORMAL_COLOR} Ausdruck Einsatzdepesche: Es wurden $ANZAHLKARTE Ausdruck(e) erstellt" >> $AD4LOG
     		fi
 	fi
 }
@@ -87,8 +88,8 @@ function fn_karte_konfiguration_lesen() {
 
 function fn_karte_konfiguration_schreiben() {
   case $1 in
-    Karten-Ausdruck)    sed -i '/<\/KARTE>/ s/.*/<KARTE>'$2'<\/KARTE>/' "$KONFIGURATIONSDATEI"; echo -e "$(date +"%Y-%m-%d--%H-%M-%S") ${LIGHT_CYAN}*EINSTELLUNG GEÄNDERT*${NORMAL_COLOR} Ausdruck Einsatzkarte: Wurde auf $(fn_karte_konfiguration_lesen Karten-Ausdruck) eingestellt." >> /var/log/ad4divera.log;;
-    Anzahl-Ausdruck)    sed -i '/<\/ANZAHLKARTE>/ s/.*/<ANZAHLKARTE>'$2'<\/ANZAHLKARTE>/' "$KONFIGURATIONSDATEI"; echo -e "$(date +"%Y-%m-%d--%H-%M-%S") ${LIGHT_CYAN}*EINSTELLUNG GEÄNDERT*${NORMAL_COLOR} Ausdruck Einsatzkarte: Es werden $(fn_karte_konfiguration_lesen Anzahl-Ausdruck) Ausdrucke erstellt." >> /var/log/ad4divera.log;;
+    Karten-Ausdruck)    sed -i '/<\/KARTE>/ s/.*/<KARTE>'$2'<\/KARTE>/' "$KONFIGURATIONSDATEI"; echo -e "$(date +"%Y-%m-%d--%H-%M-%S") ${LIGHT_CYAN}*EINSTELLUNG GEÄNDERT*${NORMAL_COLOR} Ausdruck Einsatzkarte: Wurde auf $(fn_karte_konfiguration_lesen Karten-Ausdruck) eingestellt." >> $AD4LOG;;
+    Anzahl-Ausdruck)    sed -i '/<\/ANZAHLKARTE>/ s/.*/<ANZAHLKARTE>'$2'<\/ANZAHLKARTE>/' "$KONFIGURATIONSDATEI"; echo -e "$(date +"%Y-%m-%d--%H-%M-%S") ${LIGHT_CYAN}*EINSTELLUNG GEÄNDERT*${NORMAL_COLOR} Ausdruck Einsatzkarte: Es werden $(fn_karte_konfiguration_lesen Anzahl-Ausdruck) Ausdrucke erstellt." >> $AD4LOG;;
     Login-Key) sed -i '/<\/AUTOLOGINAUSDRUCK>/ s/.*/<AUTOLOGINAUSDRUCK>'$AUTOLOGINAUSDRUCK'<\/AUTOLOGINAUSDRUCK>/' "$KONFIGURATIONSDATEI";
                sudo sed -i s/autologin\=.*$/autologin=$AUTOLOGINAUSDRUCK/  /var/www/html/ad4divera/maps.html
     ;;
