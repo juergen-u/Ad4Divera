@@ -1,6 +1,6 @@
 #!/bin/bash
 #Funktion Karte
-#Vers=1.0
+#Vers=2.0
 #Autor=Jürgen Unfall
 
 #Standard Werte.
@@ -65,9 +65,9 @@ function fn_karte_alarm() {
 		wkhtmltoimage --width 1920 --height 1280 --javascript-delay 30000 /var/www/html/ad4divera/maps.html $AD4ARCHIV/$BILDNAME.jpg
 		lp -o media=A4 -n $ANZAHLKARTE -o fit-to-page $AD4ARCHIV/$BILDNAME.jpg
     		if [ $? -ne 0 ]; then
-      			echo -e "$(date +"%Y-%m-%d--%H-%M-%S") ${LIGHT_RED}*FEHLER*${NORMAL_COLOR} Ausdruck Einsatzkarte: Es konnte kein Ausdruck erstellt werden" >> /var/log/ad4divera.log
+      			echo -e "$(date +"%Y-%m-%d--%H-%M-%S") ${LIGHT_RED}*FEHLER*${NORMAL_COLOR} Ausdruck Einsatzkarte: Es konnte kein Ausdruck erstellt werden" >> $AD4LOG
     		else
-      			echo -e "$(date +"%Y-%m-%d--%H-%M-%S") ${LIGHT_GREEN}*FUNKTION*${NORMAL_COLOR} Ausdruck Einsatzdepesche: Es wurden $ANZAHLKARTE Ausdruck(e) erstellt" >> $AD4LOG
+      			echo -e "$(date +"%Y-%m-%d--%H-%M-%S") ${LIGHT_GREEN}*FUNKTION*${NORMAL_COLOR} Ausdruck Einsatzkarte: Es wurden $ANZAHLKARTE Ausdruck(e) erstellt" >> $AD4LOG
     		fi
 	fi
 }
